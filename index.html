@@ -5,12 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- App Metadata & SEO -->
-    <title>John Paulo Sanchez — Computer Engineering Student, Web Developer & Multimedia Designer</title>
-    <meta name="description" content="Minimalist monospace portfolio for John Paulo Sanchez: Computer Engineering Student, Web Developer, Multimedia Designer, and Social Media Editor." />
-    <meta property="og:title" content="John Paulo Sanchez — Portfolio" />
-    <meta property="og:description" content="Minimalist monospace portfolio for John Paulo Sanchez: Computer Engineering Student, Web Developer, Multimedia Designer, and Social Media Editor." />
+    <title>John Paulo Sanchez - Portfolio</title>
+    <meta name="description" content="Minimalist monospace portfolio for John Paulo Sanchez: Web Developer, Multimedia Designer, and Social Media Editor." />
+    <meta name="keywords" content="John Paulo Sanchez, Web Developer, Multimedia Designer, Social Media Editor, Frontend Developer, UI Designer, Monospace Portfolio, Manila, Philippines, Remote" />
+    <meta name="author" content="John Paulo Sanchez" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://jpsnchz.dev/" />
+
+    <!-- Open Graph (Facebook, LinkedIn, Discord) -->
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:site_name" content="John Paulo Sanchez Portfolio" />
+    <meta property="og:title" content="John Paulo Sanchez - Portfolio" />
+    <meta property="og:description" content="Minimalist monospace portfolio for John Paulo Sanchez: Web Developer, Multimedia Designer, and Social Media Editor." />
+    <meta property="og:url" content="https://jpsnchz.dev/" />
+    <meta property="og:image" content="https://jpsnchz.dev/profile.png" />
+    <meta property="og:image:alt" content="Portrait of John Paulo Sanchez" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="John Paulo Sanchez - Portfolio" />
+    <meta name="twitter:description" content="Minimalist monospace portfolio for John Paulo Sanchez: Web Developer, Multimedia Designer, and Social Media Editor." />
+    <meta name="twitter:image" content="https://jpsnchz.dev/profile.png" />
+    <meta name="twitter:image:alt" content="Portrait of John Paulo Sanchez" />
+
+    <!-- Structured Data (Schema.org JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://jpsnchz.dev/#person",
+          "name": "John Paulo Sanchez",
+          "url": "https://jpsnchz.dev/",
+          "image": "https://jpsnchz.dev/profile.png",
+          "jobTitle": ["Web Developer", "Multimedia Designer", "Social Media Editor"],
+          "description": "Web Developer, Multimedia Designer, and Social Media Editor crafting refined digital systems and interactive web projects.",
+          "sameAs": [
+            "https://github.com/jpsnchz0101",
+            "https://www.linkedin.com/in/john-paulo-sanchez-32018435b/",
+            "https://www.instagram.com/snchz_pauuu/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://jpsnchz.dev/#website",
+          "url": "https://jpsnchz.dev/",
+          "name": "John Paulo Sanchez - Portfolio",
+          "description": "Minimalist monospace portfolio for John Paulo Sanchez: Web Developer, Multimedia Designer, and Social Media Editor.",
+          "publisher": {
+            "@id": "https://jpsnchz.dev/#person"
+          }
+        }
+      ]
+    }
+    </script>
 
     <!-- Google Fonts: JetBrains Mono for clean monospace styling -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -78,7 +127,7 @@
             <div class="about-profile-wrapper">
               <div class="about-avatar-frame" id="avatarFrame">
                 <img
-                  src="public/profile.png"
+                  src="./profile.png"
                   alt="Portrait of John Paulo Sanchez"
                   class="about-avatar-img"
                   id="profileImg"
