@@ -73,6 +73,9 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <!-- Interactive Background Canvas (Nodes constellation network) -->
+    <canvas id="sideInteractiveCanvas" class="side-interactive-canvas" aria-hidden="true"></canvas>
+
     <!-- Main Centered Single-Column Container (max-width ~720px) -->
     <div class="container" id="appContainer">
 
@@ -102,6 +105,7 @@
             <li><a href="#about" id="navLinkAbout">About</a></li>
             <li><a href="#experience" id="navLinkExperience">Experience</a></li>
             <li><a href="#projects" id="navLinkProjects">Projects</a></li>
+            <li><a href="#multimedia" id="navLinkMultimedia">Multimedia</a></li>
             <li><a href="#workflow" id="navLinkWorkflow">Workflow</a></li>
             <li><a href="#skills" id="navLinkSkills">Skills</a></li>
             <li><a href="#contacts" id="navLinkContacts">Contacts</a></li>
@@ -231,6 +235,135 @@
                 </svg>
                 <span>Send Message</span>
               </a>
+            </div>
+
+            <!-- Quick Tech & Creative Tool Recognition Strip -->
+            <div class="hero-stack-bar" id="heroStackBar">
+              <span class="hero-stack-label">Primary Stack &amp; Tools Arsenal</span>
+              <div class="hero-stack-icons" id="heroStackIcons">
+                <span class="hero-stack-tag" title="Python">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#3776AB" d="M11.9 1.1c-2.3 0-4.3.4-5.2 1-.9.6-1.4 1.5-1.4 2.9v2.2h6.8v.9H2.8c-1.4 0-2.3.5-2.9 1.4-.6.9-1 2.3-1 4.6 0 2.2.4 3.7 1 4.6.6.9 1.5 1.4 2.9 1.4h1.7v-2.4c0-1.4.5-2.4 1.4-3 .9-.6 2.3-.9 4.3-.9h4.3V7.2c0-1.4-.5-2.3-1.4-2.9-1-.6-3-.9-5.2-.9zm-2.6 1.7a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6z"/><path fill="#FFD43B" d="M12.1 22.9c2.3 0 4.3-.4 5.2-1 .9-.6 1.4-1.5 1.4-2.9v-2.2h-6.8v-.9h9.3c1.4 0 2.3-.5 2.9-1.4.6-.9 1-2.3 1-4.6 0-2.2-.4-3.7-1-4.6-.6-.9-1.5-1.4-2.9-1.4h-1.7v2.4c0 1.4-.5 2.4-1.4 3-.9.6-2.3.9-4.3.9h-4.3v2.6c0 1.4.5 2.3 1.4 2.9 1 .6 3 .9 5.2.9zm2.6-1.7a.8.8 0 1 1 0-1.6.8.8 0 0 1 0 1.6z"/></svg>
+                  </span>
+                  <span>Python</span>
+                </span>
+                <span class="hero-stack-tag" title="Flask">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.8 19.3l-5.6-9.7V3.5h.9a.9.9 0 1 0 0-1.8H8.9a.9.9 0 0 0 0 1.8h.9v6.1L4.2 19.3a4.2 4.2 0 0 0 3.6 6.3h8.4a4.2 4.2 0 0 0 3.6-6.3zm-7.8-8.7a.9.9 0 0 0 .1-.5V3.5h-1.8v6.6a.9.9 0 0 0 .1.5l2.2 3.8a6.5 6.5 0 0 1 1.7-.8l-2.3-4zm4.2 11.2H7.8a2.4 2.4 0 0 1-2.1-3.6l1.7-2.9a8.3 8.3 0 0 0 9.2 0l1.7 2.9a2.4 2.4 0 0 1-2.1 3.6z"/></svg>
+                  </span>
+                  <span>Flask</span>
+                </span>
+                <span class="hero-stack-tag" title="JavaScript">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="2" fill="#F7DF1E"/><path d="M6.5 18.2c.4.7 1 1.2 1.9 1.2 1.1 0 1.7-.6 1.7-1.9v-6.9h2.3v7c0 2.4-1.4 3.5-3.8 3.5-1.9 0-3.1-.9-3.7-2.3l1.6-.6zm9.3 0c.5.8 1.2 1.2 2.2 1.2 1 0 1.6-.5 1.6-1.1 0-.8-.6-1.1-1.8-1.6l-.6-.2c-1.8-.8-2.9-1.8-2.9-3.6 0-2 1.5-3.5 3.9-3.5 1.7 0 2.9.6 3.7 2.1l-1.7 1.1c-.4-.7-.9-1-1.9-1-.9 0-1.5.5-1.5 1.1 0 .7.5 1 1.6 1.4l.6.3c2.1.9 3.2 1.9 3.2 3.8 0 2.2-1.7 3.6-4.2 3.6-2.3 0-3.7-1.1-4.3-2.6l2.1-.8z"/></svg>
+                  </span>
+                  <span>JavaScript</span>
+                </span>
+                <span class="hero-stack-tag" title="HTML5 & CSS3">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#E34F26" d="M1.5 0h21l-1.9 21.3L12 24l-8.6-2.7L1.5 0z"/><path fill="#EF652A" d="M12 22l7.1-2.2 1.6-17.8H12V22z"/><path fill="#FFF" d="M12 9.5v2.9h3.6l-.3 3.7-3.3.9v2.8l6.2-1.7.9-10H12z"/></svg>
+                  </span>
+                  <span>HTML5 / CSS3</span>
+                </span>
+                <span class="hero-stack-tag" title="Tailwind CSS">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#06B6D4" d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.336 6.182 14.975 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.336 13.382 8.975 12 6.001 12z"/></svg>
+                  </span>
+                  <span>Tailwind</span>
+                </span>
+                <span class="hero-stack-tag" title="MySQL / PostgreSQL">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#00758F" d="M22.5 12.3c-.3-.4-1.2-1.2-2.8-1.3-1.4-.1-2.6.4-3.5 1-.9.7-1.5 1.5-2.2 2.3-.5.6-1.1 1.2-1.8 1.6-.7.4-1.5.6-2.4.6-1.2 0-2.3-.4-3.1-1.1-.9-.7-1.4-1.8-1.5-3.1 0-.6.1-1.2.3-1.8.2-.6.5-1.1.9-1.6.4-.4.9-.8 1.5-1 .6-.3 1.3-.4 2.1-.4 1.1 0 2.1.3 3 .8.8.6 1.4 1.3 1.8 2.2l1.6-.9c-.6-1.2-1.4-2.1-2.5-2.8-1.1-.7-2.4-1.1-3.9-1.1-1.1 0-2.1.2-3 .6s-1.7.9-2.3 1.6c-.7.7-1.1 1.5-1.5 2.4-.3.9-.5 1.9-.5 2.9 0 1.8.6 3.4 1.8 4.5 1.2 1.1 2.8 1.7 4.7 1.7 1.3 0 2.5-.3 3.6-.9 1.1-.6 2-1.4 2.7-2.3.7-.8 1.3-1.6 2-2.2.6-.6 1.4-.9 2.3-.9 1.2 0 1.9.6 2.1.9l1.1-1.2z"/></svg>
+                  </span>
+                  <span>MySQL / Postgres</span>
+                </span>
+                <span class="hero-stack-tag" title="Figma">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#F24E1E" d="M8 24c2.2 0 4-1.8 4-4v-4H8c-2.2 0-4 1.8-4 4s1.8 4 4 4z"/><path fill="#A259FF" d="M4 12c0-2.2 1.8-4 4-4h4v8H8c-2.2 0-4-1.8-4-4z"/><path fill="#F24E1E" d="M4 4c0-2.2 1.8-4 4-4h4v8H8C5.8 8 4 6.2 4 4z"/><path fill="#FF7262" d="M12 0h4c2.2 0 4 1.8 4 4s-1.8 4-4 4h-4V0z"/><path fill="#1ABCFE" d="M20 12c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4 4 1.8 4 4z"/></svg>
+                  </span>
+                  <span>Figma</span>
+                </span>
+                <span class="hero-stack-tag" title="Canva">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#00C4CC"/><path fill="#FFF" d="M15.2 8.3c-.6-.5-1.4-.8-2.3-.8-2.3 0-4.1 1.9-4.1 4.5 0 2.6 1.7 4.5 4.1 4.5 1 0 1.9-.3 2.5-.9l-.9-1.2c-.4.4-1 .7-1.6.7-1.5 0-2.6-1.2-2.6-3.1 0-1.8 1.1-3.1 2.6-3.1.6 0 1.1.2 1.5.5l.8-1.1z"/></svg>
+                  </span>
+                  <span>Canva</span>
+                </span>
+                <span class="hero-stack-tag" title="CapCut">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#FFF" d="M3.2 4.5L12 9.7l8.8-5.2C20.4 4.2 20 4 19.5 4H4.5c-.5 0-.9.2-1.3.5zM20.8 19.5L12 14.3l-8.8 5.2c.4.3.8.5 1.3.5h15c.5 0 .9-.2 1.3-.5zM2 6.2v11.6l9.6-5.8L2 6.2zm20 0l-9.6 5.8L22 17.8V6.2z"/></svg>
+                  </span>
+                  <span>CapCut</span>
+                </span>
+                <span class="hero-stack-tag" title="Notion">
+                  <span class="stack-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.105 2.295c-.466.046-.56.28-.373.466l1.727 1.447zm.793 4.293v12.272c0 .7.374.98 1.12.934l14.009-.793c.747-.047.934-.514.934-1.074V7.521c0-.56-.233-.84-.7-.793l-14.662.84c-.56.047-.701.42-.701.933zm12.553.886c.093.42 0 .84-.42.887l-.934.187v8.959c-.467.28-.98.42-1.447.42-.794 0-1.12-.28-1.727-.98l-4.527-6.906v6.673l1.353.326c.42.094.467.514.467.84v.047l-3.36.187c-.093-.374 0-.793.373-.84l1.027-.233V10.74l-1.306-.14c-.094-.374.093-.794.513-.84l3.687-.234 4.76 7.186v-6.3l-1.167-.14c-.093-.42.14-.793.56-.84l2.847-.187z"/></svg>
+                  </span>
+                  <span>Notion</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- AI Models & Intelligent Tools Strip (Below Primary Stack) -->
+            <div class="hero-stack-bar hero-ai-bar" id="heroAiStackBar">
+              <span class="hero-ai-label">AI Models &amp; Intelligent Tools</span>
+              <div class="hero-stack-icons" id="heroAiStackIcons">
+                <!-- Claude -->
+                <span class="hero-ai-tag" title="Claude by Anthropic — Advanced Reasoning, Coding &amp; Long Context">
+                  <span class="ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 2c.6 0 1 .4 1 1v5.8l4.1-4.1c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L14.4 10.2h5.8c.6 0 1 .4 1 1s-.4 1-1 1h-5.8l4.1 4.1c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0L13 13.6V19.4c0 .6-.4 1-1 1s-1-.4-1-1v-5.8l-4.1 4.1c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4l4.1-4.1H3.8c-.6 0-1-.4-1-1s.4-1 1-1h5.8L5.5 6.1c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0L11 8.8V3c0-.6.4-1 1-1z" fill="#D97757"/></svg>
+                  </span>
+                  <span>Claude</span>
+                </span>
+
+                <!-- Gemini Flash 3.8 -->
+                <span class="hero-ai-tag" title="Gemini Flash 3.8 by Google — Ultra-Fast Multimodal Intelligence">
+                  <span class="ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><defs><linearGradient id="geminiGradHero" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1A73E8"/><stop offset="50%" stop-color="#8AB4F8"/><stop offset="100%" stop-color="#9333EA"/></linearGradient></defs><path fill="url(#geminiGradHero)" d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z"/></svg>
+                  </span>
+                  <span>Gemini Flash 3.8</span>
+                </span>
+
+                <!-- DeepSeek -->
+                <span class="hero-ai-tag" title="DeepSeek — Reasoning Models &amp; Architectural Synthesis">
+                  <span class="ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#0284C7" d="M21.8 10.5c-.8-2.6-2.6-4.7-5-5.8-2.6-1.2-5.7-1.1-8.2.3C6.3 6.3 4.5 8.4 3.7 11c-.8 2.6-.4 5.4 1.1 7.6.7 1.1 1.7 2 2.8 2.6 1.8 1 4 1.3 6 .9 2.5-.5 4.6-2.1 5.9-4.3 1.3-2.1 1.7-4.7 1-7.1l1.3-.2zm-7.6 5.8c-1.4 1-3.2 1.3-4.8.8-1.6-.5-2.9-1.7-3.6-3.2-.7-1.6-.6-3.4.2-4.9.8-1.4 2.2-2.4 3.8-2.7 1.6-.3 3.3.2 4.6 1.3 1.2 1.1 1.8 2.7 1.7 4.3-.1 1.7-.8 3.3-1.9 4.4z"/><circle cx="9" cy="9.5" r="1.3" fill="#60A5FA"/></svg>
+                  </span>
+                  <span>DeepSeek</span>
+                </span>
+
+                <!-- Perplexity -->
+                <span class="hero-ai-tag" title="Perplexity — Real-Time Knowledge &amp; Grounded Web Synthesis">
+                  <span class="ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="#20B2AA"><path d="M12 2a1.2 1.2 0 0 0-1.2 1.2v3.66L7.24 3.3a1.2 1.2 0 1 0-1.7 1.7l3.56 3.56H5.44a1.2 1.2 0 1 0 0 2.4h3.66l-3.56 3.56a1.2 1.2 0 1 0 1.7 1.7l3.56-3.56v3.66a1.2 1.2 0 1 0 2.4 0v-3.66l3.56 3.56a1.2 1.2 0 1 0 1.7-1.7l-3.56-3.56h3.66a1.2 1.2 0 1 0 0-2.4h-3.66l3.56-3.56a1.2 1.2 0 1 0-1.7-1.7L13.2 6.86V3.2A1.2 1.2 0 0 0 12 2z"/></svg>
+                  </span>
+                  <span>Perplexity</span>
+                </span>
+
+                <!-- Nano Banana -->
+                <span class="hero-ai-tag" title="Nano Banana — Creative AI Modeling &amp; Media Generation">
+                  <span class="ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#F59E0B" d="M19.8 16.4c-1.3 3.8-4.8 6.4-8.8 6.6-4.6.2-8.8-3-9.8-7.5-.9-4.1.9-8.4 4.5-10.7 1.8-1.2 3.9-1.8 6.1-1.8.8 0 1.5.1 2.2.3l-.5 2.1c-.5-.1-1.1-.2-1.7-.2-1.8 0-3.5.5-4.9 1.5C4.2 8.4 2.8 11.9 3.5 15.2c.8 3.5 4.1 6 7.7 5.8 3.1-.2 5.9-2.2 6.9-5.1l1.7.5z"/><path fill="#FDE047" d="M21.5 5.5l-2.3 2.3-1.4-1.4 2.3-2.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4z"/><circle cx="15" cy="11" r="1.5" fill="#FBBF24"/></svg>
+                  </span>
+                  <span>Nano Banana</span>
+                </span>
+
+                <!-- Higgsfield -->
+                <span class="hero-ai-tag" title="Higgsfield — Generative Video &amp; Cinematic Motion AI">
+                  <span class="ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><defs><linearGradient id="higgsHero" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF2E93"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#higgsHero)"/><path d="M7 6v12M17 6v12M7 12h10" stroke="#FFF" stroke-width="2.4" stroke-linecap="round"/></svg>
+                  </span>
+                  <span>Higgsfield</span>
+                </span>
+
+                <!-- Ollama -->
+                <span class="hero-ai-tag" title="Ollama — Local LLM Serving, Edge Deployment &amp; Private Models">
+                  <span class="ai-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C9.8 2 8 3.8 8 6v2H7c-1.1 0-2 .9-2 2v2c0 .7.4 1.4 1 1.7V20c0 1.1.9 2 2 2h2v-2h4v2h2c1.1 0 2-.9 2-2v-4.3c.6-.3 1-1 1-1.7v-2c0-1.1-.9-2-2-2h-1V6c0-2.2-1.8-4-4-4zm-2 4c0-1.1.9-2 2-2s2 .9 2 2v2h-4V6zm-1 4h6v2H9v-2zm1 4h4v4h-4v-4z"/></svg>
+                  </span>
+                  <span>Ollama</span>
+                </span>
+              </div>
             </div>
           </div>
         </section>
@@ -423,13 +556,366 @@
         </section>
 
         <!-- ==================================================================
-             SECTION 04: WORKFLOW
+             SECTION 04: MULTIMEDIA & MEDIA EDITS
+             - 3 Panels for 9x16 Video (Aligned horizontally side-by-side)
+             - Media Graphics Panels (Positioned directly below the video panels)
+             ================================================================== -->
+        <section class="section reveal" id="multimedia" aria-labelledby="multimediaHeader">
+          <div class="section-header">
+            <h2 class="section-title" id="multimediaHeader">
+              <span class="number">04 —</span> multimedia &amp; edits
+            </h2>
+            <div class="section-divider" aria-hidden="true"></div>
+          </div>
+
+          <div class="multimedia-container">
+            <!-- ==============================================================
+                 SUBSECTION A: 3 Panels for 9:16 Video (Reels / TikTok / Shorts)
+                 Aligned Horizontally in a 3-Column Grid
+                 ============================================================== -->
+            <div class="multimedia-block" id="videoReelsBlock">
+              <div class="multimedia-subheading">
+                <h3 class="multimedia-subtitle">
+                  <span class="prefix">&gt;</span> 9:16 Vertical Video Reels
+                </h3>
+                <span class="multimedia-badge-tag">[ 3 horizontal panels // click to play / mute ]</span>
+              </div>
+              <p class="multimedia-hint">
+                Short-form vertical video edits featuring kinetic typography, visual storytelling, and sound design.
+              </p>
+
+              <div class="video-reels-grid" id="videoReelsGrid">
+                <!-- ==========================================
+                     9:16 Video Panel 1: Tech & Coding Reel
+                     Replace './assets/videos/reel1.mp4' with your video file
+                     ========================================== -->
+                <div class="video-reel-card" id="videoReelCard1" tabindex="0" role="region" aria-label="Play 9:16 video reel: Tech Breakdown">
+                  <!-- Video element -->
+                  <video
+                    class="reel-video-element"
+                    id="reelVideo1"
+                    playsinline
+                    loop
+                    preload="metadata"
+                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 640' fill='%230a0b0d'%3E%3Crect width='360' height='640' fill='%230e1014'/%3E%3Ccircle cx='180' cy='240' r='90' fill='%23171a21' opacity='0.7'/%3E%3Ctext x='180' y='210' font-family='monospace' font-size='13' fill='%23a5b4fc' text-anchor='middle' font-weight='600'%3E%2F%2F 9:16 REEL 01%3C/text%3E%3Ctext x='180' y='245' font-family='monospace' font-size='20' fill='%23f0f2f5' text-anchor='middle' font-weight='700'%3ETech Breakdown%3C/text%3E%3Ctext x='180' y='275' font-family='monospace' font-size='11' fill='%239da3af' text-anchor='middle'%3EKinetic Typography%3C/text%3E%3Crect x='40' y='380' width='280' height='1' fill='%23262b35'/%3E%3Ctext x='180' y='420' font-family='monospace' font-size='10' fill='%235e6573' text-anchor='middle'%3ECAPCUT %E2%80%A2 BEAT SYNC %E2%80%A2 0:30%3C/text%3E%3C/svg%3E"
+                  >
+                    <!-- User video source placeholder -->
+                    <source src="./assets/videos/reel1.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+
+                  <!-- Top Bar: Ratio & Duration -->
+                  <div class="video-card-topbar">
+                    <span class="reel-ratio-badge">9:16 REEL</span>
+                    <span class="reel-time-badge">0:30</span>
+                  </div>
+
+                  <!-- Play/Pause Button Overlay -->
+                  <div class="video-play-overlay" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </div>
+
+                  <!-- Sound Mute/Unmute Toggle Button -->
+                  <button
+                    type="button"
+                    class="video-sound-btn"
+                    id="soundBtn1"
+                    aria-label="Toggle sound for Reel 1"
+                    title="Toggle audio"
+                  >
+                    <!-- Muted Icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                  </button>
+
+                  <!-- Bottom Caption & Tags -->
+                  <div class="video-card-bottom">
+                    <h4 class="video-card-title">Educational Tech Breakdown</h4>
+                    <p class="video-card-caption">Kinetic typography and pacing explaining programming logic &amp; web architecture.</p>
+                    <div class="video-card-tags">
+                      <span class="tag-badge">CAPCUT</span>
+                      <span class="tag-badge">TYPOGRAPHY</span>
+                      <span class="tag-badge">REEL</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ==========================================
+                     9:16 Video Panel 2: UI Motion & Workflow
+                     Replace './assets/videos/reel2.mp4' with your video file
+                     ========================================== -->
+                <div class="video-reel-card" id="videoReelCard2" tabindex="0" role="region" aria-label="Play 9:16 video reel: UI Motion & Workflow">
+                  <!-- Video element -->
+                  <video
+                    class="reel-video-element"
+                    id="reelVideo2"
+                    playsinline
+                    loop
+                    preload="metadata"
+                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 640' fill='%230a0b0d'%3E%3Crect width='360' height='640' fill='%230e1014'/%3E%3Ccircle cx='180' cy='240' r='90' fill='%23171a21' opacity='0.7'/%3E%3Ctext x='180' y='210' font-family='monospace' font-size='13' fill='%23a5b4fc' text-anchor='middle' font-weight='600'%3E%2F%2F 9:16 REEL 02%3C/text%3E%3Ctext x='180' y='245' font-family='monospace' font-size='20' fill='%23f0f2f5' text-anchor='middle' font-weight='700'%3EUI Motion Design%3C/text%3E%3Ctext x='180' y='275' font-family='monospace' font-size='11' fill='%239da3af' text-anchor='middle'%3EInteractive Flow &amp; Beats%3C/text%3E%3Crect x='40' y='380' width='280' height='1' fill='%23262b35'/%3E%3Ctext x='180' y='420' font-family='monospace' font-size='10' fill='%235e6573' text-anchor='middle'%3EFIGMA %E2%80%A2 CANVA %E2%80%A2 0:45%3C/text%3E%3C/svg%3E"
+                  >
+                    <!-- User video source placeholder -->
+                    <source src="./assets/videos/reel2.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+
+                  <!-- Top Bar: Ratio & Duration -->
+                  <div class="video-card-topbar">
+                    <span class="reel-ratio-badge">9:16 REEL</span>
+                    <span class="reel-time-badge">0:45</span>
+                  </div>
+
+                  <!-- Play/Pause Button Overlay -->
+                  <div class="video-play-overlay" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </div>
+
+                  <!-- Sound Mute/Unmute Toggle Button -->
+                  <button
+                    type="button"
+                    class="video-sound-btn"
+                    id="soundBtn2"
+                    aria-label="Toggle sound for Reel 2"
+                    title="Toggle audio"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                  </button>
+
+                  <!-- Bottom Caption & Tags -->
+                  <div class="video-card-bottom">
+                    <h4 class="video-card-title">UI Motion &amp; Interaction</h4>
+                    <p class="video-card-caption">Smooth prototyping transitions, layout micro-animations, and rhythmic audio sync.</p>
+                    <div class="video-card-tags">
+                      <span class="tag-badge">FIGMA</span>
+                      <span class="tag-badge">UI MOTION</span>
+                      <span class="tag-badge">AUDIO SYNC</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ==========================================
+                     9:16 Video Panel 3: Hardware & Creative Tech
+                     Replace './assets/videos/reel3.mp4' with your video file
+                     ========================================== -->
+                <div class="video-reel-card" id="videoReelCard3" tabindex="0" role="region" aria-label="Play 9:16 video reel: Hardware & Systems">
+                  <!-- Video element -->
+                  <video
+                    class="reel-video-element"
+                    id="reelVideo3"
+                    playsinline
+                    loop
+                    preload="metadata"
+                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 640' fill='%230a0b0d'%3E%3Crect width='360' height='640' fill='%230e1014'/%3E%3Ccircle cx='180' cy='240' r='90' fill='%23171a21' opacity='0.7'/%3E%3Ctext x='180' y='210' font-family='monospace' font-size='13' fill='%23a5b4fc' text-anchor='middle' font-weight='600'%3E%2F%2F 9:16 REEL 03%3C/text%3E%3Ctext x='180' y='245' font-family='monospace' font-size='20' fill='%23f0f2f5' text-anchor='middle' font-weight='700'%3ESystem Breakdown%3C/text%3E%3Ctext x='180' y='275' font-family='monospace' font-size='11' fill='%239da3af' text-anchor='middle'%3EHardware &amp; Logic Gates%3C/text%3E%3Crect x='40' y='380' width='280' height='1' fill='%23262b35'/%3E%3Ctext x='180' y='420' font-family='monospace' font-size='10' fill='%235e6573' text-anchor='middle'%3ESHORT-FORM %E2%80%A2 SOUND %E2%80%A2 0:35%3C/text%3E%3C/svg%3E"
+                  >
+                    <!-- User video source placeholder -->
+                    <source src="./assets/videos/reel3.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+
+                  <!-- Top Bar: Ratio & Duration -->
+                  <div class="video-card-topbar">
+                    <span class="reel-ratio-badge">9:16 REEL</span>
+                    <span class="reel-time-badge">0:35</span>
+                  </div>
+
+                  <!-- Play/Pause Button Overlay -->
+                  <div class="video-play-overlay" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </div>
+
+                  <!-- Sound Mute/Unmute Toggle Button -->
+                  <button
+                    type="button"
+                    class="video-sound-btn"
+                    id="soundBtn3"
+                    aria-label="Toggle sound for Reel 3"
+                    title="Toggle audio"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                  </button>
+
+                  <!-- Bottom Caption & Tags -->
+                  <div class="video-card-bottom">
+                    <h4 class="video-card-title">Computer Systems &amp; Hardware</h4>
+                    <p class="video-card-caption">Visual breakdown of microprocessors, circuit logic, and hardware fundamentals.</p>
+                    <div class="video-card-tags">
+                      <span class="tag-badge">HARDWARE</span>
+                      <span class="tag-badge">SOUND DESIGN</span>
+                      <span class="tag-badge">TIKTOK</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==============================================================
+                 SUBSECTION B: Media Graphics & Visual Edits
+                 Positioned directly below the 3 video panels
+                 ============================================================== -->
+            <div class="multimedia-block" id="mediaGraphicsBlock">
+              <div class="multimedia-subheading">
+                <h3 class="multimedia-subtitle">
+                  <span class="prefix">&gt;</span> Media Graphics &amp; Visual Edits
+                </h3>
+                <span class="multimedia-badge-tag">[ visual assets // click to enlarge ]</span>
+              </div>
+              <p class="multimedia-hint">
+                Social media campaign graphics, editorial layouts, infographics, and promotional branding materials.
+              </p>
+
+              <div class="media-graphics-grid" id="mediaGraphicsGrid">
+                <!-- Media Graphic Card 1 -->
+                <article class="media-graphic-card" id="mediaGraphic1">
+                  <div
+                    class="media-graphic-thumb-frame"
+                    data-title="Brand Identity &amp; Editorial Social Poster"
+                    data-desc="Minimalist monochrome promotional poster designed with strict grid alignments, modern typography, and structured visual hierarchy."
+                    data-tags="CANVA,FIGMA,TYPOGRAPHY,BRANDING"
+                    data-src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450' fill='%230a0b0d'%3E%3Crect width='600' height='450' fill='%230f1217'/%3E%3Crect x='30' y='30' width='540' height='390' rx='6' fill='%23141820' stroke='%232a303c' stroke-width='1.5'/%3E%3Ctext x='60' y='90' font-family='monospace' font-size='14' fill='%23a5b4fc' font-weight='600'%3E%2F%2F BRAND IDENTITY %E2%80%A2 2026%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='26' fill='%23f0f2f5' font-weight='700'%3EMultimedia System%3C/text%3E%3Ctext x='60' y='175' font-family='monospace' font-size='14' fill='%239da3af'%3EEditorial Graphic &amp; Social Campaign%3C/text%3E%3Crect x='60' y='210' width='140' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ctext x='130' y='285' font-family='monospace' font-size='28' fill='%23f0f2f5' font-weight='700' text-anchor='middle'%3EJPS%3C/text%3E%3Crect x='220' y='210' width='320' height='16' rx='2' fill='%23252c3a'/%3E%3Crect x='220' y='240' width='280' height='12' rx='2' fill='%231f2531'/%3E%3Crect x='220' y='265' width='300' height='12' rx='2' fill='%231f2531'/%3E%3Crect x='220' y='290' width='220' height='12' rx='2' fill='%231f2531'/%3E%3Crect x='220' y='325' width='100' height='24' rx='3' fill='%23a5b4fc' opacity='0.2'/%3E%3Ctext x='270' y='341' font-family='monospace' font-size='10' fill='%23a5b4fc' text-anchor='middle' font-weight='600'%3EFIGMA %E2%80%A2 CANVA%3C/text%3E%3C/svg%3E"
+                  >
+                    <img
+                      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450' fill='%230a0b0d'%3E%3Crect width='600' height='450' fill='%230f1217'/%3E%3Crect x='30' y='30' width='540' height='390' rx='6' fill='%23141820' stroke='%232a303c' stroke-width='1.5'/%3E%3Ctext x='60' y='90' font-family='monospace' font-size='14' fill='%23a5b4fc' font-weight='600'%3E%2F%2F BRAND IDENTITY %E2%80%A2 2026%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='26' fill='%23f0f2f5' font-weight='700'%3EMultimedia System%3C/text%3E%3Ctext x='60' y='175' font-family='monospace' font-size='14' fill='%239da3af'%3EEditorial Graphic &amp; Social Campaign%3C/text%3E%3Crect x='60' y='210' width='140' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ctext x='130' y='285' font-family='monospace' font-size='28' fill='%23f0f2f5' font-weight='700' text-anchor='middle'%3EJPS%3C/text%3E%3Crect x='220' y='210' width='320' height='16' rx='2' fill='%23252c3a'/%3E%3Crect x='220' y='240' width='280' height='12' rx='2' fill='%231f2531'/%3E%3Crect x='220' y='265' width='300' height='12' rx='2' fill='%231f2531'/%3E%3Crect x='220' y='290' width='220' height='12' rx='2' fill='%231f2531'/%3E%3Crect x='220' y='325' width='100' height='24' rx='3' fill='%23a5b4fc' opacity='0.2'/%3E%3Ctext x='270' y='341' font-family='monospace' font-size='10' fill='%23a5b4fc' text-anchor='middle' font-weight='600'%3EFIGMA %E2%80%A2 CANVA%3C/text%3E%3C/svg%3E"
+                      alt="Brand Identity &amp; Editorial Social Poster Graphic"
+                      class="media-graphic-img"
+                      loading="lazy"
+                    />
+                    <div class="media-graphic-zoom-overlay">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                      </svg>
+                      <span>inspect</span>
+                    </div>
+                  </div>
+                  <div class="media-graphic-body">
+                    <h4 class="media-graphic-title">Brand Identity &amp; Poster</h4>
+                    <p class="media-graphic-desc">
+                      Clean editorial graphic with monospace typography, high-contrast layouts, and brand tokens.
+                    </p>
+                    <div class="media-graphic-footer">
+                      <div class="media-graphic-tags">
+                        <span class="tag-badge">CANVA</span>
+                        <span class="tag-badge">FIGMA</span>
+                        <span class="tag-badge">POSTER</span>
+                      </div>
+                      <button type="button" class="media-inspect-btn" aria-label="Inspect Brand Identity graphic">[ view ↗ ]</button>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Media Graphic Card 2 -->
+                <article class="media-graphic-card" id="mediaGraphic2">
+                  <div
+                    class="media-graphic-thumb-frame"
+                    data-title="Educational Carousel Slide Deck"
+                    data-desc="Multi-slide visual learning framework designed for social media feeds, breaking down complex coding patterns into scannable steps."
+                    data-tags="CANVA,PHOTOSHOP,UI/UX,CAROUSEL"
+                    data-src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450' fill='%230a0b0d'%3E%3Crect width='600' height='450' fill='%230f1217'/%3E%3Crect x='30' y='30' width='540' height='390' rx='6' fill='%23141820' stroke='%232a303c' stroke-width='1.5'/%3E%3Ctext x='60' y='90' font-family='monospace' font-size='14' fill='%2310b981' font-weight='600'%3E%2F%2F CAROUSEL DECK %E2%80%A2 5 SLIDES%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='24' fill='%23f0f2f5' font-weight='700'%3EResponsive Web Design%3C/text%3E%3Ctext x='60' y='175' font-family='monospace' font-size='13' fill='%239da3af'%3EMedia Queries, Flexbox &amp; Tokens%3C/text%3E%3Cg transform='translate(60, 210)'%3E%3Crect width='150' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ctext x='75' y='40' font-family='monospace' font-size='11' fill='%23a5b4fc' text-anchor='middle'%3ESLIDE 01%3C/text%3E%3Ctext x='75' y='75' font-family='monospace' font-size='16' fill='%23f0f2f5' font-weight='700' text-anchor='middle'%3EMOBILE%3C/text%3E%3Crect x='25' y='95' width='100' height='8' rx='2' fill='%23323c4d'/%3E%3C/g%3E%3Cg transform='translate(225, 210)'%3E%3Crect width='150' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ctext x='75' y='40' font-family='monospace' font-size='11' fill='%23a5b4fc' text-anchor='middle'%3ESLIDE 02%3C/text%3E%3Ctext x='75' y='75' font-family='monospace' font-size='16' fill='%23f0f2f5' font-weight='700' text-anchor='middle'%3ETABLET%3C/text%3E%3Crect x='25' y='95' width='100' height='8' rx='2' fill='%23323c4d'/%3E%3C/g%3E%3Cg transform='translate(390, 210)'%3E%3Crect width='150' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ctext x='75' y='40' font-family='monospace' font-size='11' fill='%23a5b4fc' text-anchor='middle'%3ESLIDE 03%3C/text%3E%3Ctext x='75' y='75' font-family='monospace' font-size='16' fill='%23f0f2f5' font-weight='700' text-anchor='middle'%3EDESKTOP%3C/text%3E%3Crect x='25' y='95' width='100' height='8' rx='2' fill='%23323c4d'/%3E%3C/g%3E%3C/svg%3E"
+                  >
+                    <img
+                      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450' fill='%230a0b0d'%3E%3Crect width='600' height='450' fill='%230f1217'/%3E%3Crect x='30' y='30' width='540' height='390' rx='6' fill='%23141820' stroke='%232a303c' stroke-width='1.5'/%3E%3Ctext x='60' y='90' font-family='monospace' font-size='14' fill='%2310b981' font-weight='600'%3E%2F%2F CAROUSEL DECK %E2%80%A2 5 SLIDES%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='24' fill='%23f0f2f5' font-weight='700'%3EResponsive Web Design%3C/text%3E%3Ctext x='60' y='175' font-family='monospace' font-size='13' fill='%239da3af'%3EMedia Queries, Flexbox &amp; Tokens%3C/text%3E%3Cg transform='translate(60, 210)'%3E%3Crect width='150' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ctext x='75' y='40' font-family='monospace' font-size='11' fill='%23a5b4fc' text-anchor='middle'%3ESLIDE 01%3C/text%3E%3Ctext x='75' y='75' font-family='monospace' font-size='16' fill='%23f0f2f5' font-weight='700' text-anchor='middle'%3EMOBILE%3C/text%3E%3Crect x='25' y='95' width='100' height='8' rx='2' fill='%23323c4d'/%3E%3C/g%3E%3Cg transform='translate(225, 210)'%3E%3Crect width='150' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ctext x='75' y='40' font-family='monospace' font-size='11' fill='%23a5b4fc' text-anchor='middle'%3ESLIDE 02%3C/text%3E%3Ctext x='75' y='75' font-family='monospace' font-size='16' fill='%23f0f2f5' font-weight='700' text-anchor='middle'%3ETABLET%3C/text%3E%3Crect x='25' y='95' width='100' height='8' rx='2' fill='%23323c4d'/%3E%3C/g%3E%3Cg transform='translate(390, 210)'%3E%3Crect width='150' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ctext x='75' y='40' font-family='monospace' font-size='11' fill='%23a5b4fc' text-anchor='middle'%3ESLIDE 03%3C/text%3E%3Ctext x='75' y='75' font-family='monospace' font-size='16' fill='%23f0f2f5' font-weight='700' text-anchor='middle'%3EDESKTOP%3C/text%3E%3Crect x='25' y='95' width='100' height='8' rx='2' fill='%23323c4d'/%3E%3C/g%3E%3C/svg%3E"
+                      alt="Educational Carousel Slide Deck Graphic"
+                      class="media-graphic-img"
+                      loading="lazy"
+                    />
+                    <div class="media-graphic-zoom-overlay">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                      </svg>
+                      <span>inspect</span>
+                    </div>
+                  </div>
+                  <div class="media-graphic-body">
+                    <h4 class="media-graphic-title">Educational Carousel Deck</h4>
+                    <p class="media-graphic-desc">
+                      Multi-slide Instagram carousel formatting complex engineering concepts for fast comprehension.
+                    </p>
+                    <div class="media-graphic-footer">
+                      <div class="media-graphic-tags">
+                        <span class="tag-badge">CANVA</span>
+                        <span class="tag-badge">CAROUSEL</span>
+                        <span class="tag-badge">UI/UX</span>
+                      </div>
+                      <button type="button" class="media-inspect-btn" aria-label="Inspect Carousel Deck graphic">[ view ↗ ]</button>
+                    </div>
+                  </div>
+                </article>
+
+                <!-- Media Graphic Card 3 -->
+                <article class="media-graphic-card" id="mediaGraphic3">
+                  <div
+                    class="media-graphic-thumb-frame"
+                    data-title="Social Media Campaign &amp; Event Graphics"
+                    data-desc="High-impact visual banner and promotional asset designed for tech workshops, student summits, and community hackathons."
+                    data-tags="ILLUSTRATOR,PHOTOSHOP,CANVA,EVENT"
+                    data-src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450' fill='%230a0b0d'%3E%3Crect width='600' height='450' fill='%230f1217'/%3E%3Crect x='30' y='30' width='540' height='390' rx='6' fill='%23141820' stroke='%232a303c' stroke-width='1.5'/%3E%3Ctext x='60' y='90' font-family='monospace' font-size='14' fill='%2338bdf8' font-weight='600'%3E%2F%2F EVENT PROMO &amp; SOCIAL ASSET%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='24' fill='%23f0f2f5' font-weight='700'%3ETech Summit &amp; Hackathon%3C/text%3E%3Ctext x='60' y='175' font-family='monospace' font-size='13' fill='%239da3af'%3ECampaign Artwork &amp; Banner Sets%3C/text%3E%3Crect x='60' y='210' width='480' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ccircle cx='130' cy='280' r='40' fill='%23283243'/%3E%3Cpolygon points='130,255 155,295 105,295' fill='%23a5b4fc' opacity='0.8'/%3E%3Ctext x='200' y='260' font-family='monospace' font-size='15' fill='%23f0f2f5' font-weight='600'%3EBUILD %E2%80%A2 CODE %E2%80%A2 DEPLOY%3C/text%3E%3Ctext x='200' y='290' font-family='monospace' font-size='12' fill='%239da3af'%3EManila, Philippines %E2%80%A2 2026%3C/text%3E%3Crect x='200' y='310' width='120' height='20' rx='2' fill='%2338bdf8' opacity='0.2'/%3E%3Ctext x='260' y='324' font-family='monospace' font-size='10' fill='%2338bdf8' text-anchor='middle' font-weight='600'%3ESOCIAL BANNER%3C/text%3E%3C/svg%3E"
+                  >
+                    <img
+                      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 450' fill='%230a0b0d'%3E%3Crect width='600' height='450' fill='%230f1217'/%3E%3Crect x='30' y='30' width='540' height='390' rx='6' fill='%23141820' stroke='%232a303c' stroke-width='1.5'/%3E%3Ctext x='60' y='90' font-family='monospace' font-size='14' fill='%2338bdf8' font-weight='600'%3E%2F%2F EVENT PROMO &amp; SOCIAL ASSET%3C/text%3E%3Ctext x='60' y='140' font-family='monospace' font-size='24' fill='%23f0f2f5' font-weight='700'%3ETech Summit &amp; Hackathon%3C/text%3E%3Ctext x='60' y='175' font-family='monospace' font-size='13' fill='%239da3af'%3ECampaign Artwork &amp; Banner Sets%3C/text%3E%3Crect x='60' y='210' width='480' height='140' rx='4' fill='%231c222d' stroke='%23364052'/%3E%3Ccircle cx='130' cy='280' r='40' fill='%23283243'/%3E%3Cpolygon points='130,255 155,295 105,295' fill='%23a5b4fc' opacity='0.8'/%3E%3Ctext x='200' y='260' font-family='monospace' font-size='15' fill='%23f0f2f5' font-weight='600'%3EBUILD %E2%80%A2 CODE %E2%80%A2 DEPLOY%3C/text%3E%3Ctext x='200' y='290' font-family='monospace' font-size='12' fill='%239da3af'%3EManila, Philippines %E2%80%A2 2026%3C/text%3E%3Crect x='200' y='310' width='120' height='20' rx='2' fill='%2338bdf8' opacity='0.2'/%3E%3Ctext x='260' y='324' font-family='monospace' font-size='10' fill='%2338bdf8' text-anchor='middle' font-weight='600'%3ESOCIAL BANNER%3C/text%3E%3C/svg%3E"
+                      alt="Social Media Campaign &amp; Event Graphics"
+                      class="media-graphic-img"
+                      loading="lazy"
+                    />
+                    <div class="media-graphic-zoom-overlay">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                      </svg>
+                      <span>inspect</span>
+                    </div>
+                  </div>
+                  <div class="media-graphic-body">
+                    <h4 class="media-graphic-title">Event Promo &amp; Campaign</h4>
+                    <p class="media-graphic-desc">
+                      Visual campaign assets for tech hackathons and community events across multiple formats.
+                    </p>
+                    <div class="media-graphic-footer">
+                      <div class="media-graphic-tags">
+                        <span class="tag-badge">ILLUSTRATOR</span>
+                        <span class="tag-badge">CANVA</span>
+                        <span class="tag-badge">CAMPAIGN</span>
+                      </div>
+                      <button type="button" class="media-inspect-btn" aria-label="Inspect Event Promo graphic">[ view ↗ ]</button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================================================================
+             SECTION 05: WORKFLOW
              Chronological steps: Discovery, Design, Engineering, Deployment
              ================================================================== -->
         <section class="section reveal" id="workflow" aria-labelledby="workflowHeader">
           <div class="section-header">
             <h2 class="section-title" id="workflowHeader">
-              <span class="number">04 —</span> workflow
+              <span class="number">05 —</span> workflow
             </h2>
             <div class="section-divider" aria-hidden="true"></div>
           </div>
@@ -474,84 +960,344 @@
         </section>
 
         <!-- ==================================================================
-             SECTION 05: SKILLS
+             SECTION 06: SKILLS
              Grouped into: Web Development, Design & Editing, Social & Content
              ================================================================== -->
         <section class="section reveal" id="skills" aria-labelledby="skillsHeader">
           <div class="section-header">
             <h2 class="section-title" id="skillsHeader">
-              <span class="number">05 —</span> skills
+              <span class="number">06 —</span> skills
             </h2>
             <div class="section-divider" aria-hidden="true"></div>
           </div>
 
           <div class="skills-container" id="skillsContainer">
-            <!-- Category 1: Web Development -->
+            <!-- Category 1: Web Development & Programming -->
             <div class="skill-category-block" id="skillCatWeb">
               <h3 class="skill-category-title">
-                <span>&gt;</span> Web Development
+                <span class="title-left"><span>&gt;</span> Web Development &amp; Programming</span>
+                <span class="skill-category-count">[ 12 tools &amp; frameworks ]</span>
               </h3>
               <div class="skill-pills-wrap">
-                <span class="skill-pill">HTML5</span>
-                <span class="skill-pill">CSS3 / Flexbox / Grid</span>
-                <span class="skill-pill">JavaScript (ES6+)</span>
-                <span class="skill-pill">PHP</span>
-                <span class="skill-pill">Python / Flask</span>
-                <span class="skill-pill">MySQL</span>
-                <span class="skill-pill">PostgreSQL</span>
-                <span class="skill-pill">pgAdmin 4</span>
-                <span class="skill-pill">Responsive Design</span>
-                <span class="skill-pill">Git &amp; GitHub</span>
-                <span class="skill-pill">REST APIs</span>
-                <span class="skill-pill">Tailwind CSS</span>
+                <!-- HTML5 -->
+                <span class="skill-pill" title="HTML5 Semantic Markup">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#E34F26" d="M1.5 0h21l-1.9 21.3L12 24l-8.6-2.7L1.5 0z"/><path fill="#EF652A" d="M12 22l7.1-2.2 1.6-17.8H12V22z"/><path fill="#EBEBEB" d="M12 9.5H8.2l-.3-3.3H12V3.4H4.5l.8 9H12v-2.9zm0 6.6l-3.6-1-.2-2.5H5.4l.4 4.5 6.2 1.7v-2.7z"/><path fill="#FFF" d="M12 9.5v2.9h3.6l-.3 3.7-3.3.9v2.8l6.2-1.7.9-10H12v1.4zm0-6.1v2.8h7.2l.2-2.8H12z"/></svg>
+                  </span>
+                  <span class="skill-name">HTML5</span>
+                </span>
+
+                <!-- CSS3 -->
+                <span class="skill-pill" title="CSS3, Flexbox, Grid Layouts">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#1572B6" d="M1.5 0h21l-1.9 21.3L12 24l-8.6-2.7L1.5 0z"/><path fill="#33A9DC" d="M12 22l7.1-2.2 1.6-17.8H12V22z"/><path fill="#EBEBEB" d="M12 9.4H8.4l-.2-2.8H12V3.8H4.6l.8 8.4H12V9.4zm0 6.7l-3.5-.9-.2-2.5H5.4l.4 4.5 6.2 1.7v-2.8z"/><path fill="#FFF" d="M12 9.4h3.7l-.3 3.6-3.4.9v2.8l6.2-1.7.7-8.4H12v2.8zm0-5.6v2.8h7.3l.2-2.8H12z"/></svg>
+                  </span>
+                  <span class="skill-name">CSS3 / Flex / Grid</span>
+                </span>
+
+                <!-- JavaScript -->
+                <span class="skill-pill" title="JavaScript ES6+ Modern Syntax">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="2" fill="#F7DF1E"/><path d="M6.5 18.2c.4.7 1 1.2 1.9 1.2 1.1 0 1.7-.6 1.7-1.9v-6.9h2.3v7c0 2.4-1.4 3.5-3.8 3.5-1.9 0-3.1-.9-3.7-2.3l1.6-.6zm9.3 0c.5.8 1.2 1.2 2.2 1.2 1 0 1.6-.5 1.6-1.1 0-.8-.6-1.1-1.8-1.6l-.6-.2c-1.8-.8-2.9-1.8-2.9-3.6 0-2 1.5-3.5 3.9-3.5 1.7 0 2.9.6 3.7 2.1l-1.7 1.1c-.4-.7-.9-1-1.9-1-.9 0-1.5.5-1.5 1.1 0 .7.5 1 1.6 1.4l.6.3c2.1.9 3.2 1.9 3.2 3.8 0 2.2-1.7 3.6-4.2 3.6-2.3 0-3.7-1.1-4.3-2.6l2.1-.8z"/></svg>
+                  </span>
+                  <span class="skill-name">JavaScript (ES6+)</span>
+                </span>
+
+                <!-- Python -->
+                <span class="skill-pill" title="Python 3 Scripting & Logic">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#3776AB" d="M11.9 1.1c-2.3 0-4.3.4-5.2 1-.9.6-1.4 1.5-1.4 2.9v2.2h6.8v.9H2.8c-1.4 0-2.3.5-2.9 1.4-.6.9-1 2.3-1 4.6 0 2.2.4 3.7 1 4.6.6.9 1.5 1.4 2.9 1.4h1.7v-2.4c0-1.4.5-2.4 1.4-3 .9-.6 2.3-.9 4.3-.9h4.3V7.2c0-1.4-.5-2.3-1.4-2.9-1-.6-3-.9-5.2-.9zm-2.6 1.7a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6z"/><path fill="#FFD43B" d="M12.1 22.9c2.3 0 4.3-.4 5.2-1 .9-.6 1.4-1.5 1.4-2.9v-2.2h-6.8v-.9h9.3c1.4 0 2.3-.5 2.9-1.4.6-.9 1-2.3 1-4.6 0-2.2-.4-3.7-1-4.6-.6-.9-1.5-1.4-2.9-1.4h-1.7v2.4c0 1.4-.5 2.4-1.4 3-.9.6-2.3.9-4.3.9h-4.3v2.6c0 1.4.5 2.3 1.4 2.9 1 .6 3 .9 5.2.9zm2.6-1.7a.8.8 0 1 1 0-1.6.8.8 0 0 1 0 1.6z"/></svg>
+                  </span>
+                  <span class="skill-name">Python</span>
+                </span>
+
+                <!-- Flask -->
+                <span class="skill-pill" title="Flask Lightweight Web Framework">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.8 19.3l-5.6-9.7V3.5h.9a.9.9 0 1 0 0-1.8H8.9a.9.9 0 0 0 0 1.8h.9v6.1L4.2 19.3a4.2 4.2 0 0 0 3.6 6.3h8.4a4.2 4.2 0 0 0 3.6-6.3zm-7.8-8.7a.9.9 0 0 0 .1-.5V3.5h-1.8v6.6a.9.9 0 0 0 .1.5l2.2 3.8a6.5 6.5 0 0 1 1.7-.8l-2.3-4zm4.2 11.2H7.8a2.4 2.4 0 0 1-2.1-3.6l1.7-2.9a8.3 8.3 0 0 0 9.2 0l1.7 2.9a2.4 2.4 0 0 1-2.1 3.6z"/></svg>
+                  </span>
+                  <span class="skill-name">Flask Backend</span>
+                </span>
+
+                <!-- Tailwind CSS -->
+                <span class="skill-pill" title="Tailwind CSS Utility Framework">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#06B6D4" d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.336 6.182 14.975 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.336 13.382 8.975 12 6.001 12z"/></svg>
+                  </span>
+                  <span class="skill-name">Tailwind CSS</span>
+                </span>
+
+                <!-- PHP -->
+                <span class="skill-pill" title="PHP Server Scripting">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#777BB4" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm-5.8 16.3H4.4l1.6-8.6h3.4c1.8 0 2.8.9 2.5 2.6-.4 1.8-1.7 2.7-3.2 2.7H6.9l-.7 3.3zm2.2-5.1h1.2c.7 0 1.2-.4 1.3-1 .1-.7-.3-1-1-1H9l-.6 2zm8.8 5.1h-1.8l1.6-8.6h3.4c1.8 0 2.8.9 2.5 2.6-.4 1.8-1.7 2.7-3.2 2.7h-1.8l-.7 3.3zm2.2-5.1h1.2c.7 0 1.2-.4 1.3-1 .1-.7-.3-1-1-1h-.9l-.6 2zm-5.7 5.1h-1.9l.7-3.7h-1.6l-.3 1.5h-1.7l1.6-8.6h1.8l-.7 3.7h1.6l.3-1.5h1.7l-1.5 8.6z"/></svg>
+                  </span>
+                  <span class="skill-name">PHP</span>
+                </span>
+
+                <!-- MySQL -->
+                <span class="skill-pill" title="MySQL Relational Database">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#00758F" d="M22.5 12.3c-.3-.4-1.2-1.2-2.8-1.3-1.4-.1-2.6.4-3.5 1-.9.7-1.5 1.5-2.2 2.3-.5.6-1.1 1.2-1.8 1.6-.7.4-1.5.6-2.4.6-1.2 0-2.3-.4-3.1-1.1-.9-.7-1.4-1.8-1.5-3.1 0-.6.1-1.2.3-1.8.2-.6.5-1.1.9-1.6.4-.4.9-.8 1.5-1 .6-.3 1.3-.4 2.1-.4 1.1 0 2.1.3 3 .8.8.6 1.4 1.3 1.8 2.2l1.6-.9c-.6-1.2-1.4-2.1-2.5-2.8-1.1-.7-2.4-1.1-3.9-1.1-1.1 0-2.1.2-3 .6s-1.7.9-2.3 1.6c-.7.7-1.1 1.5-1.5 2.4-.3.9-.5 1.9-.5 2.9 0 1.8.6 3.4 1.8 4.5 1.2 1.1 2.8 1.7 4.7 1.7 1.3 0 2.5-.3 3.6-.9 1.1-.6 2-1.4 2.7-2.3.7-.8 1.3-1.6 2-2.2.6-.6 1.4-.9 2.3-.9 1.2 0 1.9.6 2.1.9l1.1-1.2z"/></svg>
+                  </span>
+                  <span class="skill-name">MySQL</span>
+                </span>
+
+                <!-- PostgreSQL -->
+                <span class="skill-pill" title="PostgreSQL Object-Relational Database">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#336791" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.6 16.8c-.5.2-1.1.3-1.7.3-3.1 0-5.6-2.3-5.6-5.4 0-1.8.8-3.4 2.1-4.4l1.2 1.4c-.9.7-1.5 1.8-1.5 3 0 2.1 1.7 3.6 3.8 3.6.5 0 .9-.1 1.3-.2l.4 1.7zm3.1-4c-.7 1.8-2.2 3.1-4.1 3.6l-.5-1.7c1.3-.4 2.4-1.3 2.9-2.6.4-.9.4-1.9.1-2.9l1.7-.5c.4 1.4.3 2.8-.1 4.1z"/></svg>
+                  </span>
+                  <span class="skill-name">PostgreSQL</span>
+                </span>
+
+                <!-- Git & GitHub -->
+                <span class="skill-pill" title="Git Version Control & GitHub">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#F05032" d="M23.5 10.9L13.1.5c-.7-.7-1.8-.7-2.4 0L8.3 2.9l3.1 3.1c.7-.2 1.6 0 2.1.6.6.6.7 1.4.5 2.1l3 3c.7-.2 1.6 0 2.1.6.8.8.8 2.2 0 3-.8.8-2.2.8-3 0-.6-.6-.8-1.5-.6-2.2l-2.9-2.9v6.5c.2.2.4.4.5.6.8.8.8 2.2 0 3-.8.8-2.2.8-3 0-.8-.8-.8-2.2 0-3 .2-.2.4-.4.6-.5V8.8c-.2-.2-.4-.3-.6-.5-.6-.6-.8-1.5-.6-2.2L2.9 8.3.5 10.7c-.7.7-.7 1.8 0 2.4l10.4 10.4c.7.7 1.8.7 2.4 0l10.2-10.2c.7-.7.7-1.8 0-2.4z"/></svg>
+                  </span>
+                  <span class="skill-name">Git &amp; GitHub</span>
+                </span>
+
+                <!-- REST APIs -->
+                <span class="skill-pill" title="RESTful Endpoints & Architecture">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                  </span>
+                  <span class="skill-name">REST APIs</span>
+                </span>
+
+                <!-- Responsive Design -->
+                <span class="skill-pill" title="Cross-Device Responsive Architecture">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  </span>
+                  <span class="skill-name">Responsive Design</span>
+                </span>
               </div>
             </div>
 
-            <!-- Category 2: Design & Editing -->
+            <!-- Category 2: UI/UX & Design Tools -->
             <div class="skill-category-block" id="skillCatDesign">
               <h3 class="skill-category-title">
-                <span>&gt;</span> Design &amp; Editing
+                <span class="title-left"><span>&gt;</span> UI/UX &amp; Design Tools</span>
+                <span class="skill-category-count">[ 8 creative tools ]</span>
               </h3>
               <div class="skill-pills-wrap">
-                <span class="skill-pill">Figma</span>
-                <span class="skill-pill">Canva</span>
-                <span class="skill-pill">Capcut</span>
-                <span class="skill-pill">UI / UX Prototyping</span>
-                <span class="skill-pill">Adobe Premiere Pro</span>
-                <span class="skill-pill">Photoshop</span>
-                <span class="skill-pill">Typography &amp; Layout</span>
-                <span class="skill-pill">Design Systems</span>
-                <span class="skill-pill">Color Grading</span>
+                <!-- Figma -->
+                <span class="skill-pill" title="Figma UI/UX & Wireframing">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#F24E1E" d="M8 24c2.2 0 4-1.8 4-4v-4H8c-2.2 0-4 1.8-4 4s1.8 4 4 4z"/><path fill="#A259FF" d="M4 12c0-2.2 1.8-4 4-4h4v8H8c-2.2 0-4 1.8-4 4z"/><path fill="#F24E1E" d="M4 4c0-2.2 1.8-4 4-4h4v8H8C5.8 8 4 6.2 4 4z"/><path fill="#FF7262" d="M12 0h4c2.2 0 4 1.8 4 4s-1.8 4-4 4h-4V0z"/><path fill="#1ABCFE" d="M20 12c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4 4 1.8 4 4z"/></svg>
+                  </span>
+                  <span class="skill-name">Figma</span>
+                </span>
+
+                <!-- Canva -->
+                <span class="skill-pill" title="Canva Social Graphics & Decks">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#00C4CC"/><path fill="#FFF" d="M15.2 8.3c-.6-.5-1.4-.8-2.3-.8-2.3 0-4.1 1.9-4.1 4.5 0 2.6 1.7 4.5 4.1 4.5 1 0 1.9-.3 2.5-.9l-.9-1.2c-.4.4-1 .7-1.6.7-1.5 0-2.6-1.2-2.6-3.1 0-1.8 1.1-3.1 2.6-3.1.6 0 1.1.2 1.5.5l.8-1.1z"/></svg>
+                  </span>
+                  <span class="skill-name">Canva</span>
+                </span>
+
+                <!-- CapCut -->
+                <span class="skill-pill" title="CapCut Video Editing & Pacing">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#FFF" d="M3.2 4.5L12 9.7l8.8-5.2C20.4 4.2 20 4 19.5 4H4.5c-.5 0-.9.2-1.3.5zM20.8 19.5L12 14.3l-8.8 5.2c.4.3.8.5 1.3.5h15c.5 0 .9-.2 1.3-.5zM2 6.2v11.6l9.6-5.8L2 6.2zm20 0l-9.6 5.8L22 17.8V6.2z"/></svg>
+                  </span>
+                  <span class="skill-name">CapCut</span>
+                </span>
+
+                <!-- Adobe Premiere Pro -->
+                <span class="skill-pill" title="Adobe Premiere Pro NLE Video">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#00005B"/><rect x="1" y="1" width="22" height="22" rx="3" fill="#000028" stroke="#9999FF" stroke-width="1.2"/><text x="4.5" y="16.5" fill="#9999FF" font-family="sans-serif" font-weight="800" font-size="11">Pr</text></svg>
+                  </span>
+                  <span class="skill-name">Adobe Premiere Pro</span>
+                </span>
+
+                <!-- Adobe Photoshop -->
+                <span class="skill-pill" title="Adobe Photoshop Image Manipulation">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#001E36"/><rect x="1" y="1" width="22" height="22" rx="3" fill="#001526" stroke="#31A8FF" stroke-width="1.2"/><text x="4" y="16.5" fill="#31A8FF" font-family="sans-serif" font-weight="800" font-size="11">Adobe Photoshop</text></svg>
+                  </span>
+                  <span class="skill-name">Adobe Photoshop</span>
+                </span>
+
+                <!-- Adobe Illustrator -->
+                <span class="skill-pill" title="Adobe Illustrator Vector Assets">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#330000"/><rect x="1" y="1" width="22" height="22" rx="3" fill="#200000" stroke="#FF9A00" stroke-width="1.2"/><text x="4.5" y="16.5" fill="#FF9A00" font-family="sans-serif" font-weight="800" font-size="11">Ai</text></svg>
+                  </span>
+                  <span class="skill-name">Adobe Illustrator</span>
+                </span>
+
+                <!-- UI / UX Prototyping -->
+                <span class="skill-pill" title="User Flow & Interface Prototyping">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                  </span>
+                  <span class="skill-name">UI / UX Prototyping</span>
+                </span>
+
+                <!-- Design Systems & Tokens -->
+                <span class="skill-pill" title="Design Systems & Color Hierarchy">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                  </span>
+                  <span class="skill-name">Design Systems</span>
+                </span>
               </div>
             </div>
 
-            <!-- Category 3: Social & Content -->
+            <!-- Category 3: Social, Workflow & Productivity -->
             <div class="skill-category-block" id="skillCatSocial">
               <h3 class="skill-category-title">
-                <span>&gt;</span> Social &amp; Content
+                <span class="title-left"><span>&gt;</span> Social Media, Workflow &amp; Productivity</span>
+                <span class="skill-category-count">[ 8 production tools ]</span>
               </h3>
               <div class="skill-pills-wrap">
-                <span class="skill-pill">Notion</span>
-                <span class="skill-pill">Short-Form Video (Reels &amp; TikTok)</span>
-                <span class="skill-pill">Content Strategy</span>
-                <span class="skill-pill">Visual Storytelling</span>
-                <span class="skill-pill">Audio &amp; Beat Syncing</span>
-                <span class="skill-pill">Audience Analytics</span>
-                <span class="skill-pill">Trend Spotting</span>
-                <span class="skill-pill">Community Engagement</span>
+                <!-- Notion -->
+                <span class="skill-pill" title="Notion Docs, Project Management & Systems">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.105 2.295c-.466.046-.56.28-.373.466l1.727 1.447zm.793 4.293v12.272c0 .7.374.98 1.12.934l14.009-.793c.747-.047.934-.514.934-1.074V7.521c0-.56-.233-.84-.7-.793l-14.662.84c-.56.047-.701.42-.701.933zm12.553.886c.093.42 0 .84-.42.887l-.934.187v8.959c-.467.28-.98.42-1.447.42-.794 0-1.12-.28-1.727-.98l-4.527-6.906v6.673l1.353.326c.42.094.467.514.467.84v.047l-3.36.187c-.093-.374 0-.793.373-.84l1.027-.233V10.74l-1.306-.14c-.094-.374.093-.794.513-.84l3.687-.234 4.76 7.186v-6.3l-1.167-.14c-.093-.42.14-.793.56-.84l2.847-.187z"/></svg>
+                  </span>
+                  <span class="skill-name">Notion</span>
+                </span>
+
+                <!-- TikTok -->
+                <span class="skill-pill" title="TikTok Vertical Short-Form Video">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#25F4EE" d="M12.5 7.8c1.3 1.4 3 2.3 5 2.5v2.8c-1.9-.1-3.6-.8-5-1.9v6.5c0 3.5-2.8 6.3-6.3 6.3S0 21.2 0 17.7s2.8-6.3 6.3-6.3c.6 0 1.2.1 1.7.3V14.6c-.5-.2-1.1-.3-1.7-.3-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5V2h2.8v5.8z"/><path fill="#FE2C55" d="M16.5 2.8C17.6 4.3 19.4 5.3 21.5 5.5V8.3C19.6 8.2 17.9 7.5 16.5 6.4V13c0 3.5-2.8 6.3-6.3 6.3s-6.3-2.8-6.3-6.3 2.8-6.3 6.3-6.3c.6 0 1.2.1 1.7.3V9.8c-.5-.2-1.1-.3-1.7-.3-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5V0h2.8v2.8z"/><path fill="#FFFFFF" d="M14.5 4.8C15.8 6.2 17.6 7.1 19.6 7.3V10.1C17.7 10 16 9.3 14.6 8.2V14.8C14.6 18.3 11.8 21.1 8.3 21.1S2 18.3 2 14.8s2.8-6.3 6.3-6.3c.6 0 1.2.1 1.7.3V11.7c-.5-.2-1.1-.3-1.7-.3-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5V0h2.8v4.8z"/></svg>
+                  </span>
+                  <span class="skill-name">TikTok / Reels Video</span>
+                </span>
+
+                <!-- Instagram -->
+                <span class="skill-pill" title="Instagram Visual Feeds & Reels">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="url(#igGrad2)"/><circle cx="12" cy="12" r="4.8" fill="none" stroke="#FFF" stroke-width="2"/><circle cx="18" cy="6" r="1.2" fill="#FFF"/><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="#FFF" stroke-width="2"/><defs><radialGradient id="igGrad2" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs></svg>
+                  </span>
+                  <span class="skill-name">Instagram &amp; Stories</span>
+                </span>
+
+                <!-- VS Code -->
+                <span class="skill-pill" title="Visual Studio Code IDE">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#007ACC" d="M17.6 23.8L23.5 21c.5-.3.8-.8.8-1.3V4.3c0-.5-.3-1-.8-1.3l-5.9-2.8c-.6-.3-1.3-.1-1.7.4L7.8 8.8 3.5 5.5c-.4-.3-1-.3-1.4 0L.4 7c-.4.3-.5.9-.3 1.4l4.2 3.6-4.2 3.6c-.2.5-.1 1.1.3 1.4l1.7 1.5c.4.3 1 .3 1.4 0l4.3-3.3 8.1 8.2c.4.5 1.1.7 1.7.4zM18 6.5l3.5 1.7v7.6L18 17.5V6.5z"/></svg>
+                  </span>
+                  <span class="skill-name">VS Code</span>
+                </span>
+
+                <!-- Audio & Beat Syncing -->
+                <span class="skill-pill" title="Audio Waveforms & Beat Matching">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5v14M22 9v6M7 5v14M2 9v6"></path></svg>
+                  </span>
+                  <span class="skill-name">Audio &amp; Beat Syncing</span>
+                </span>
+
+                <!-- Visual Storytelling -->
+                <span class="skill-pill" title="Kinetic Typography & Storyboarding">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                  </span>
+                  <span class="skill-name">Visual Storytelling</span>
+                </span>
+
+                <!-- Audience Analytics -->
+                <span class="skill-pill" title="Engagement & Retention Analytics">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                  </span>
+                  <span class="skill-name">Audience Analytics</span>
+                </span>
+
+                <!-- Content Strategy -->
+                <span class="skill-pill" title="Content Strategy & Release Schedules">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+                  </span>
+                  <span class="skill-name">Content Strategy</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Category 4: AI Tools & Intelligent Models -->
+            <div class="skill-category-block" id="skillCatAi">
+              <h3 class="skill-category-title">
+                <span class="title-left"><span>&gt;</span> AI Tools &amp; Intelligent Models</span>
+                <span class="skill-category-count">[ 7 AI tools ]</span>
+              </h3>
+              <div class="skill-pills-wrap">
+                <!-- Claude -->
+                <span class="skill-pill" title="Claude by Anthropic — Advanced Reasoning, Coding &amp; Long-Context Synthesis">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 2c.6 0 1 .4 1 1v5.8l4.1-4.1c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L14.4 10.2h5.8c.6 0 1 .4 1 1s-.4 1-1 1h-5.8l4.1 4.1c.4.4.4 1 0 1.4-.4.4-1 .4-1.4 0L13 13.6V19.4c0 .6-.4 1-1 1s-1-.4-1-1v-5.8l-4.1 4.1c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4l4.1-4.1H3.8c-.6 0-1-.4-1-1s.4-1 1-1h5.8L5.5 6.1c-.4-.4-.4-1 0-1.4.4-.4 1-.4 1.4 0L11 8.8V3c0-.6.4-1 1-1z" fill="#D97757"/></svg>
+                  </span>
+                  <span class="skill-name">Claude</span>
+                </span>
+
+                <!-- Gemini Flash 3.8 -->
+                <span class="skill-pill" title="Gemini Flash 3.8 by Google — High-Speed Multimodal Intelligence">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><defs><linearGradient id="geminiGradSkill" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1A73E8"/><stop offset="50%" stop-color="#8AB4F8"/><stop offset="100%" stop-color="#9333EA"/></linearGradient></defs><path fill="url(#geminiGradSkill)" d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z"/></svg>
+                  </span>
+                  <span class="skill-name">Gemini Flash 3.8</span>
+                </span>
+
+                <!-- DeepSeek -->
+                <span class="skill-pill" title="DeepSeek — Open Weights Reasoning &amp; Logic Engine">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#0284C7" d="M21.8 10.5c-.8-2.6-2.6-4.7-5-5.8-2.6-1.2-5.7-1.1-8.2.3C6.3 6.3 4.5 8.4 3.7 11c-.8 2.6-.4 5.4 1.1 7.6.7 1.1 1.7 2 2.8 2.6 1.8 1 4 1.3 6 .9 2.5-.5 4.6-2.1 5.9-4.3 1.3-2.1 1.7-4.7 1-7.1l1.3-.2zm-7.6 5.8c-1.4 1-3.2 1.3-4.8.8-1.6-.5-2.9-1.7-3.6-3.2-.7-1.6-.6-3.4.2-4.9.8-1.4 2.2-2.4 3.8-2.7 1.6-.3 3.3.2 4.6 1.3 1.2 1.1 1.8 2.7 1.7 4.3-.1 1.7-.8 3.3-1.9 4.4z"/><circle cx="9" cy="9.5" r="1.3" fill="#60A5FA"/></svg>
+                  </span>
+                  <span class="skill-name">DeepSeek</span>
+                </span>
+
+                <!-- Perplexity -->
+                <span class="skill-pill" title="Perplexity — Real-Time Knowledge &amp; Search Synthesis">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="#20B2AA"><path d="M12 2a1.2 1.2 0 0 0-1.2 1.2v3.66L7.24 3.3a1.2 1.2 0 1 0-1.7 1.7l3.56 3.56H5.44a1.2 1.2 0 1 0 0 2.4h3.66l-3.56 3.56a1.2 1.2 0 1 0 1.7 1.7l3.56-3.56v3.66a1.2 1.2 0 1 0 2.4 0v-3.66l3.56 3.56a1.2 1.2 0 1 0 1.7-1.7l-3.56-3.56h3.66a1.2 1.2 0 1 0 0-2.4h-3.66l3.56-3.56a1.2 1.2 0 1 0-1.7-1.7L13.2 6.86V3.2A1.2 1.2 0 0 0 12 2z"/></svg>
+                  </span>
+                  <span class="skill-name">Perplexity</span>
+                </span>
+
+                <!-- Nano Banana -->
+                <span class="skill-pill" title="Nano Banana — Creative AI Modeling &amp; Media Generation">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="#F59E0B" d="M19.8 16.4c-1.3 3.8-4.8 6.4-8.8 6.6-4.6.2-8.8-3-9.8-7.5-.9-4.1.9-8.4 4.5-10.7 1.8-1.2 3.9-1.8 6.1-1.8.8 0 1.5.1 2.2.3l-.5 2.1c-.5-.1-1.1-.2-1.7-.2-1.8 0-3.5.5-4.9 1.5C4.2 8.4 2.8 11.9 3.5 15.2c.8 3.5 4.1 6 7.7 5.8 3.1-.2 5.9-2.2 6.9-5.1l1.7.5z"/><path fill="#FDE047" d="M21.5 5.5l-2.3 2.3-1.4-1.4 2.3-2.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4z"/><circle cx="15" cy="11" r="1.5" fill="#FBBF24"/></svg>
+                  </span>
+                  <span class="skill-name">Nano Banana</span>
+                </span>
+
+                <!-- Higgsfield -->
+                <span class="skill-pill" title="Higgsfield — Generative Video &amp; Cinematic Motion AI">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><defs><linearGradient id="higgsSkill" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF2E93"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#higgsSkill)"/><path d="M7 6v12M17 6v12M7 12h10" stroke="#FFF" stroke-width="2.4" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="skill-name">Higgsfield</span>
+                </span>
+
+                <!-- Ollama -->
+                <span class="skill-pill" title="Ollama — Local LLM Serving, Edge Deployment &amp; Private Models">
+                  <span class="skill-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C9.8 2 8 3.8 8 6v2H7c-1.1 0-2 .9-2 2v2c0 .7.4 1.4 1 1.7V20c0 1.1.9 2 2 2h2v-2h4v2h2c1.1 0 2-.9 2-2v-4.3c.6-.3 1-1 1-1.7v-2c0-1.1-.9-2-2-2h-1V6c0-2.2-1.8-4-4-4zm-2 4c0-1.1.9-2 2-2s2 .9 2 2v2h-4V6zm-1 4h6v2H9v-2zm1 4h4v4h-4v-4z"/></svg>
+                  </span>
+                  <span class="skill-name">Ollama</span>
+                </span>
               </div>
             </div>
           </div>
         </section>
 
         <!-- ==================================================================
-             SECTION 06: CONTACTS
+             SECTION 07: CONTACTS
              Email, quick copy button, social links, and interactive message form
              ================================================================== -->
         <section class="section reveal" id="contacts" aria-labelledby="contactsHeader">
           <div class="section-header">
             <h2 class="section-title" id="contactsHeader">
-              <span class="number">06 —</span> contacts
+              <span class="number">07 —</span> contacts
             </h2>
             <div class="section-divider" aria-hidden="true"></div>
           </div>
@@ -716,6 +1462,41 @@
         <span>© 2026 John Paulo Sanchez — Built with plain HTML, CSS, JS</span>
         <a href="#about" class="footer-back-to-top" id="backToTopLink">↑ back to top</a>
       </footer>
+    </div>
+
+    <!-- ====================================================================
+         LIGHTBOX MODAL FOR HIGH-RES MEDIA & REEL VIEWING
+         ==================================================================== -->
+    <div
+      class="lightbox-modal"
+      id="lightboxModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lightboxTitle"
+      aria-hidden="true"
+    >
+      <div class="lightbox-dialog" id="lightboxDialog">
+        <div class="lightbox-header">
+          <h3 class="lightbox-title" id="lightboxTitle">Media Asset Preview</h3>
+          <button
+            type="button"
+            class="lightbox-close-btn"
+            id="lightboxCloseBtn"
+            aria-label="Close media preview"
+          >
+            [ ✕ close / esc ]
+          </button>
+        </div>
+
+        <div class="lightbox-media-container" id="lightboxMediaContainer">
+          <!-- Dynamic media content injected via script.js -->
+        </div>
+
+        <div class="lightbox-footer">
+          <p class="lightbox-desc" id="lightboxDesc"></p>
+          <div class="lightbox-tags" id="lightboxTags"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Main JavaScript File -->
