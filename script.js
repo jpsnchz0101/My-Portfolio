@@ -456,14 +456,13 @@ function initMediaLightbox() {
 
 /**
  * ------------------------------------------------------------------------------
- * 9. INTERACTIVE BACKGROUND CANVAS FOR SIDE MARGINS
- * Generates dynamic, interactive visual particles in the left and right empty
- * spaces. Responds to mouse motion, clicks, and mode switches.
+ * 9. INTERACTIVE BACKGROUND CANVAS FOR SIDE MARGINS & CONSTELLATION NODES
+ * Generates an ultra-smooth, high-DPI constellation network in the background.
+ * Features organic velocity damping, harmonic oscillation, lerped mouse tracking,
+ * soft quadratic connection fade, and gentle click ripples.
  * ------------------------------------------------------------------------------
  */
-let currentCanvasMode = 'constellation';
 let canvasRipples = [];
-let rippleCount = 0;
 
 function initInteractiveCanvas() {
   const canvas = document.getElementById('sideInteractiveCanvas');
@@ -472,20 +471,56 @@ function initInteractiveCanvas() {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  let width = (canvas.width = window.innerWidth);
-  let height = (canvas.height = window.innerHeight);
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    initParticles();
-  });
+  // Set high-DPI canvas buffer and viewport sizing
+  function resizeCanvas() {
+    const oldWidth = width || window.innerWidth;
+    const oldHeight = height || window.innerHeight;
 
-  // Track mouse coordinates
-  const mouse = { x: -1000, y: -1000, active: false };
+    width = window.innerWidth;
+    height = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+
+    // Rescale existing particle coordinates proportionally to prevent visual jumps
+    if (particles.length > 0 && oldWidth > 0 && oldHeight > 0) {
+      const rx = width / oldWidth;
+      const ry = height / oldHeight;
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].x *= rx;
+        particles[i].y *= ry;
+      }
+    } else {
+      initParticles();
+    }
+  }
+
+  // Smooth mouse coordinates with target interpolation
+  const mouse = {
+    x: -2000,
+    y: -2000,
+    targetX: -2000,
+    targetY: -2000,
+    active: false,
+  };
+
   window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+    mouse.targetX = e.clientX;
+    mouse.targetY = e.clientY;
+    if (!mouse.active) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    }
     mouse.active = true;
   });
 
@@ -495,65 +530,99 @@ function initInteractiveCanvas() {
 
   // Particle pool
   const particles = [];
-  const PARTICLE_COUNT = 75;
 
   function initParticles() {
     particles.length = 0;
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    // Adapt particle count for screens
+    const count = width > 900 ? 75 : 45;
+
+    for (let i = 0; i < count; i++) {
+      // Gentle baseline velocities
+      let bVx = (Math.random() - 0.5) * 0.32;
+      let bVy = (Math.random() - 0.5) * 0.32;
+      if (Math.abs(bVx) < 0.08) bVx = bVx >= 0 ? 0.12 : -0.12;
+      if (Math.abs(bVy) < 0.08) bVy = bVy >= 0 ? 0.12 : -0.12;
+
+      // Color scheme: mostly subtle lavender/indigo, with emerald & cyan accents
+      const randColor = Math.random();
+      let coreColor = 'rgba(165, 180, 252, ALPHA)';
+      let haloColor = 'rgba(165, 180, 252, ALPHA)';
+      if (randColor > 0.85) {
+        coreColor = 'rgba(16, 185, 129, ALPHA)';
+        haloColor = 'rgba(16, 185, 129, ALPHA)';
+      } else if (randColor > 0.72) {
+        coreColor = 'rgba(56, 189, 248, ALPHA)';
+        haloColor = 'rgba(56, 189, 248, ALPHA)';
+      }
+
+      const radius = Math.random() * 1.2 + 1.1;
+
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        radius: Math.random() * 1.8 + 1,
-        baseAlpha: Math.random() * 0.32 + 0.15,
-        char: String.fromCharCode(0x30a0 + Math.floor(Math.random() * 96)),
-        charTimer: 0,
+        baseVx: bVx,
+        baseVy: bVy,
+        vx: bVx,
+        vy: bVy,
+        radius: radius,
+        baseAlpha: Math.random() * 0.3 + 0.22,
+        pulsePhase: Math.random() * Math.PI * 2,
+        coreColor: coreColor,
+        haloColor: haloColor,
+        hasHalo: radius > 1.7,
       });
     }
   }
 
-  initParticles();
-
-  // Click trigger for ripple animation
+  // Smooth expanding click ripple
   function addRipple(x, y) {
     canvasRipples.push({
       x: x,
       y: y,
       radius: 0,
-      maxRadius: Math.min(width, height) * 0.25 + 40,
-      alpha: 0.8,
-      speed: 3.5,
+      maxRadius: Math.min(width, height) * 0.22 + 45,
+      alpha: 0.65,
+      speed: 3.2,
     });
-    rippleCount++;
   }
 
   window.addEventListener('click', (e) => {
-    // Spawn ripple if clicked on background canvas (not clicking buttons/inputs/links)
-    if (!e.target.closest('button, a, input, textarea')) {
+    // Only spawn ripple on background clicks (avoid buttons/inputs/links/videos)
+    if (!e.target.closest('button, a, input, textarea, video, .video-reel-card')) {
       addRipple(e.clientX, e.clientY);
     }
   });
 
-  const rippleBtn = document.getElementById('fxRippleTrigger');
-  if (rippleBtn) {
-    rippleBtn.addEventListener('click', () => {
-      const leftX = Math.max(60, (width - 760) / 4);
-      const rightX = width - leftX;
-      addRipple(leftX, 220);
-      addRipple(rightX, 260);
-    });
-  }
+  // Handle debounced resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resizeCanvas, 120);
+  });
 
-  // Animation Loop (60 FPS)
-  function render() {
+  // Initial sizing & particles setup
+  resizeCanvas();
+
+  // Animation timing
+  let lastTime = performance.now();
+
+  function render(currentTime) {
+    const delta = Math.min((currentTime - lastTime) / 16.667, 2.0);
+    lastTime = currentTime;
+
     ctx.clearRect(0, 0, width, height);
 
-    // 1. Draw and update ripples
+    // 1. Smooth lerping for mouse position
+    if (mouse.active) {
+      mouse.x += (mouse.targetX - mouse.x) * 0.14;
+      mouse.y += (mouse.targetY - mouse.y) * 0.14;
+    }
+
+    // 2. Render & update ripples
     for (let i = canvasRipples.length - 1; i >= 0; i--) {
       const r = canvasRipples[i];
-      r.radius += r.speed;
-      r.alpha -= 0.015;
+      r.radius += r.speed * delta;
+      r.alpha -= 0.014 * delta;
 
       if (r.alpha <= 0 || r.radius >= r.maxRadius) {
         canvasRipples.splice(i, 1);
@@ -563,116 +632,131 @@ function initInteractiveCanvas() {
       ctx.save();
       ctx.beginPath();
       ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(16, 185, 129, ${r.alpha})`;
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = `rgba(16, 185, 129, ${r.alpha.toFixed(3)})`;
+      ctx.lineWidth = 1.2;
       ctx.stroke();
 
-      // Secondary ring
-      if (r.radius > 20) {
+      if (r.radius > 16) {
         ctx.beginPath();
-        ctx.arc(r.x, r.y, r.radius * 0.65, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(56, 189, 248, ${r.alpha * 0.5})`;
-        ctx.lineWidth = 1;
+        ctx.arc(r.x, r.y, r.radius * 0.68, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(56, 189, 248, ${(r.alpha * 0.45).toFixed(3)})`;
+        ctx.lineWidth = 0.8;
         ctx.stroke();
       }
       ctx.restore();
+
+      // Gentle ripple shockwave push on nearby particles
+      for (let j = 0; j < particles.length; j++) {
+        const p = particles[j];
+        const rdx = p.x - r.x;
+        const rdy = p.y - r.y;
+        const rdist = Math.hypot(rdx, rdy);
+        if (Math.abs(rdist - r.radius) < 22 && rdist > 2) {
+          const pushForce = 0.04 * (1 - r.radius / r.maxRadius);
+          p.vx += (rdx / rdist) * pushForce;
+          p.vy += (rdy / rdist) * pushForce;
+        }
+      }
     }
 
-    // 2. Render particles according to selected mode
-    if (currentCanvasMode === 'constellation') {
-      // Draw nodes and connecting lines
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+    // 3. Update particle positions with organic physics
+    const pad = 28;
+    const mouseMaxDist = 145;
 
-        // Move particle
-        p.x += p.vx;
-        p.y += p.vy;
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
 
-        // Boundaries
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
+      // Subtle harmonic waving drift
+      const waveX = Math.sin(currentTime * 0.0007 + p.pulsePhase) * 0.07;
+      const waveY = Math.cos(currentTime * 0.0007 + p.pulsePhase) * 0.07;
 
-        // Mouse interaction: slower, smoother attraction across the entire canvas (center included)
-        if (mouse.active) {
-          const dx = mouse.x - p.x;
-          const dy = mouse.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const maxDist = 160;
+      p.x += (p.vx + waveX) * delta;
+      p.y += (p.vy + waveY) * delta;
 
-          if (dist < maxDist && dist > 1) {
-            // Attract slower with organic ease-off
-            const force = (1 - dist / maxDist) * 0.0035;
-            p.x += dx * force;
-            p.y += dy * force;
+      // Smooth wrap-around
+      if (p.x < -pad) p.x = width + pad;
+      else if (p.x > width + pad) p.x = -pad;
+      if (p.y < -pad) p.y = height + pad;
+      else if (p.y > height + pad) p.y = -pad;
 
-            // Draw line to mouse
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.strokeStyle = `rgba(16, 185, 129, ${0.32 * (1 - dist / maxDist)})`;
-            ctx.lineWidth = 0.7;
-            ctx.stroke();
-          }
+      // Mouse magnetic attraction & velocity damping
+      if (mouse.active) {
+        const mdx = mouse.x - p.x;
+        const mdy = mouse.y - p.y;
+        const mdist = Math.hypot(mdx, mdy);
+
+        if (mdist < mouseMaxDist && mdist > 2) {
+          const norm = 1 - mdist / mouseMaxDist;
+          const force = norm * 0.032;
+          p.vx += (mdx / mdist) * force;
+          p.vy += (mdy / mdist) * force;
+
+          // Draw soft tether to mouse
+          const tetherAlpha = Math.pow(norm, 1.8) * 0.28;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = `rgba(16, 185, 129, ${tetherAlpha.toFixed(3)})`;
+          ctx.lineWidth = 0.75;
+          ctx.stroke();
         }
+      }
 
-        // Draw node
+      // Smooth velocity return to baseline drift
+      p.vx = p.vx * 0.955 + p.baseVx * 0.045;
+      p.vy = p.vy * 0.955 + p.baseVy * 0.045;
+    }
+
+    // 4. Draw connecting lines with quadratic smooth distance falloff
+    const maxLineDist = 92;
+    const maxLineDistSq = maxLineDist * maxLineDist;
+
+    for (let i = 0; i < particles.length; i++) {
+      const p1 = particles[i];
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+
+        // Prevent wrap-around streaks across the canvas
+        if (Math.abs(dx) > maxLineDist || Math.abs(dy) > maxLineDist) continue;
+
+        const distSq = dx * dx + dy * dy;
+        if (distSq < maxLineDistSq) {
+          const dist = Math.sqrt(distSq);
+          const ratio = 1 - dist / maxLineDist;
+          const lineAlpha = (ratio * ratio * 0.16).toFixed(3);
+
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(165, 180, 252, ${lineAlpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // 5. Draw crisp anti-aliased nodes with breathing cycle
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      const pulse = Math.sin(currentTime * 0.0022 + p.pulsePhase) * 0.08;
+      const currentAlpha = Math.max(0.12, Math.min(0.85, p.baseAlpha + pulse));
+
+      // Subtle outer glow halo for larger nodes
+      if (p.hasHalo) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(165, 180, 252, ${p.baseAlpha})`;
+        ctx.arc(p.x, p.y, p.radius * 2.3, 0, Math.PI * 2);
+        ctx.fillStyle = p.haloColor.replace('ALPHA', (currentAlpha * 0.18).toFixed(3));
         ctx.fill();
-
-        // Connect nearby nodes
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 85) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${0.12 * (1 - dist / 85)})`;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-          }
-        }
       }
-    } else if (currentCanvasMode === 'matrix') {
-      // Digital glyph cascade in the side margins
-      ctx.font = '11px monospace';
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.y += 1.2;
-        if (p.y > height) p.y = 0;
 
-        p.charTimer++;
-        if (p.charTimer > 15) {
-          p.char = String.fromCharCode(0x30a0 + Math.floor(Math.random() * 96));
-          p.charTimer = 0;
-        }
-
-        ctx.fillStyle = `rgba(16, 185, 129, ${p.baseAlpha * 1.2})`;
-        ctx.fillText(p.char, p.x, p.y);
-      }
-    } else if (currentCanvasMode === 'sparks') {
-      // Floating glowing embers
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.y -= 0.6;
-        p.x += Math.sin(p.y * 0.02) * 0.4;
-        if (p.y < 0) p.y = height;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * 1.2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(56, 189, 248, ${p.baseAlpha * 1.4})`;
-        ctx.shadowColor = '#38bdf8';
-        ctx.shadowBlur = 6;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
+      // Main node core
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.coreColor.replace('ALPHA', currentAlpha.toFixed(3));
+      ctx.fill();
     }
 
     requestAnimationFrame(render);

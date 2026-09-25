@@ -556,29 +556,28 @@
         </section>
 
         <!-- ==================================================================
-             SECTION 04: MULTIMEDIA & MEDIA EDITS
-             - 3 Panels for 9x16 Video (Aligned horizontally side-by-side)
-             - Media Graphics Panels (Positioned directly below the video panels)
+             SECTION 04: MULTIMEDIA & VIDEO REELS
+             - 9:16 Vertical Video Reels (Short-Form Edits & App Walkthroughs)
+             - Media Graphics & Visual Edits (Hidden for now per request)
              ================================================================== -->
         <section class="section reveal" id="multimedia" aria-labelledby="multimediaHeader">
           <div class="section-header">
             <h2 class="section-title" id="multimediaHeader">
-              <span class="number">04 —</span> multimedia &amp; edits
+              <span class="number">04 —</span> video reels &amp; multimedia
             </h2>
             <div class="section-divider" aria-hidden="true"></div>
           </div>
 
           <div class="multimedia-container">
             <!-- ==============================================================
-                 SUBSECTION A: 3 Panels for 9:16 Video (Reels / TikTok / Shorts)
-                 Aligned Horizontally in a 3-Column Grid
+                 9:16 Vertical Video Reels (Short-Form Edits & App Showcase)
                  ============================================================== -->
             <div class="multimedia-block" id="videoReelsBlock">
               <div class="multimedia-subheading">
                 <h3 class="multimedia-subtitle">
                   <span class="prefix">&gt;</span> 9:16 Vertical Video Reels
                 </h3>
-                <span class="multimedia-badge-tag">[ 3 horizontal panels // click to play / mute ]</span>
+                <span class="multimedia-badge-tag">[ 2 vertical reels // click to play / mute ]</span>
               </div>
               <p class="multimedia-hint">
                 Short-form vertical video edits featuring kinetic typography, visual storytelling, and sound design.
@@ -586,10 +585,9 @@
 
               <div class="video-reels-grid" id="videoReelsGrid">
                 <!-- ==========================================
-                     9:16 Video Panel 1: Tech & Coding Reel
-                     Replace './assets/videos/reel1.mp4' with your video file
+                     9:16 Video Panel 1: Video_1.mp4 (Short-Form Creative Edit)
                      ========================================== -->
-                <div class="video-reel-card" id="videoReelCard1" tabindex="0" role="region" aria-label="Play 9:16 video reel: Tech Breakdown">
+                <div class="video-reel-card" id="videoReelCard1" tabindex="0" role="region" aria-label="Play 9:16 video reel: Short-Form Creative Edit">
                   <!-- Video element -->
                   <video
                     class="reel-video-element"
@@ -597,17 +595,18 @@
                     playsinline
                     loop
                     preload="metadata"
-                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 640' fill='%230a0b0d'%3E%3Crect width='360' height='640' fill='%230e1014'/%3E%3Ccircle cx='180' cy='240' r='90' fill='%23171a21' opacity='0.7'/%3E%3Ctext x='180' y='210' font-family='monospace' font-size='13' fill='%23a5b4fc' text-anchor='middle' font-weight='600'%3E%2F%2F 9:16 REEL 01%3C/text%3E%3Ctext x='180' y='245' font-family='monospace' font-size='20' fill='%23f0f2f5' text-anchor='middle' font-weight='700'%3ETech Breakdown%3C/text%3E%3Ctext x='180' y='275' font-family='monospace' font-size='11' fill='%239da3af' text-anchor='middle'%3EKinetic Typography%3C/text%3E%3Crect x='40' y='380' width='280' height='1' fill='%23262b35'/%3E%3Ctext x='180' y='420' font-family='monospace' font-size='10' fill='%235e6573' text-anchor='middle'%3ECAPCUT %E2%80%A2 BEAT SYNC %E2%80%A2 0:30%3C/text%3E%3C/svg%3E"
+                    poster="/assets/video/posters/video_1_poster.jpg"
                   >
-                    <!-- User video source placeholder -->
-                    <source src="./assets/videos/reel1.mp4" type="video/mp4" />
+                    <source src="/assets/video/Video_1.mp4" type="video/mp4" />
+                    <source src="./assets/video/Video_1.mp4" type="video/mp4" />
+                    <source src="/src/assets/video/Video_1.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
 
                   <!-- Top Bar: Ratio & Duration -->
                   <div class="video-card-topbar">
                     <span class="reel-ratio-badge">9:16 REEL</span>
-                    <span class="reel-time-badge">0:30</span>
+                    <span class="reel-time-badge">0:10</span>
                   </div>
 
                   <!-- Play/Pause Button Overlay -->
@@ -635,21 +634,20 @@
 
                   <!-- Bottom Caption & Tags -->
                   <div class="video-card-bottom">
-                    <h4 class="video-card-title">Educational Tech Breakdown</h4>
-                    <p class="video-card-caption">Kinetic typography and pacing explaining programming logic &amp; web architecture.</p>
+                    <h4 class="video-card-title">Short-Form Creative Edit</h4>
+                    <p class="video-card-caption">Kinetic motion typography, beat pacing, and visual storytelling tailored for social feeds.</p>
                     <div class="video-card-tags">
+                      <span class="tag-badge">9:16 REEL</span>
                       <span class="tag-badge">CAPCUT</span>
-                      <span class="tag-badge">TYPOGRAPHY</span>
-                      <span class="tag-badge">REEL</span>
+                      <span class="tag-badge">MOTION</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- ==========================================
-                     9:16 Video Panel 2: UI Motion & Workflow
-                     Replace './assets/videos/reel2.mp4' with your video file
+                     9:16 Video Panel 2: balai.mp4 (Balai App Showcase)
                      ========================================== -->
-                <div class="video-reel-card" id="videoReelCard2" tabindex="0" role="region" aria-label="Play 9:16 video reel: UI Motion & Workflow">
+                <div class="video-reel-card" id="videoReelCard2" tabindex="0" role="region" aria-label="Play 9:16 video reel: Balai App Showcase">
                   <!-- Video element -->
                   <video
                     class="reel-video-element"
@@ -657,17 +655,18 @@
                     playsinline
                     loop
                     preload="metadata"
-                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 640' fill='%230a0b0d'%3E%3Crect width='360' height='640' fill='%230e1014'/%3E%3Ccircle cx='180' cy='240' r='90' fill='%23171a21' opacity='0.7'/%3E%3Ctext x='180' y='210' font-family='monospace' font-size='13' fill='%23a5b4fc' text-anchor='middle' font-weight='600'%3E%2F%2F 9:16 REEL 02%3C/text%3E%3Ctext x='180' y='245' font-family='monospace' font-size='20' fill='%23f0f2f5' text-anchor='middle' font-weight='700'%3EUI Motion Design%3C/text%3E%3Ctext x='180' y='275' font-family='monospace' font-size='11' fill='%239da3af' text-anchor='middle'%3EInteractive Flow &amp; Beats%3C/text%3E%3Crect x='40' y='380' width='280' height='1' fill='%23262b35'/%3E%3Ctext x='180' y='420' font-family='monospace' font-size='10' fill='%235e6573' text-anchor='middle'%3EFIGMA %E2%80%A2 CANVA %E2%80%A2 0:45%3C/text%3E%3C/svg%3E"
+                    poster="/assets/video/posters/balai_poster.jpg"
                   >
-                    <!-- User video source placeholder -->
-                    <source src="./assets/videos/reel2.mp4" type="video/mp4" />
+                    <source src="/assets/video/balai.mp4" type="video/mp4" />
+                    <source src="./assets/video/balai.mp4" type="video/mp4" />
+                    <source src="/src/assets/video/balai.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
 
                   <!-- Top Bar: Ratio & Duration -->
                   <div class="video-card-topbar">
                     <span class="reel-ratio-badge">9:16 REEL</span>
-                    <span class="reel-time-badge">0:45</span>
+                    <span class="reel-time-badge">0:06</span>
                   </div>
 
                   <!-- Play/Pause Button Overlay -->
@@ -694,71 +693,12 @@
 
                   <!-- Bottom Caption & Tags -->
                   <div class="video-card-bottom">
-                    <h4 class="video-card-title">UI Motion &amp; Interaction</h4>
-                    <p class="video-card-caption">Smooth prototyping transitions, layout micro-animations, and rhythmic audio sync.</p>
+                    <h4 class="video-card-title">Balai | App Reel</h4>
+                    <p class="video-card-caption">Dynamic showcase of the Balai rental ledger tool highlighting interface flow, ledger tracking, and UI interaction.</p>
                     <div class="video-card-tags">
-                      <span class="tag-badge">FIGMA</span>
-                      <span class="tag-badge">UI MOTION</span>
-                      <span class="tag-badge">AUDIO SYNC</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- ==========================================
-                     9:16 Video Panel 3: Hardware & Creative Tech
-                     Replace './assets/videos/reel3.mp4' with your video file
-                     ========================================== -->
-                <div class="video-reel-card" id="videoReelCard3" tabindex="0" role="region" aria-label="Play 9:16 video reel: Hardware & Systems">
-                  <!-- Video element -->
-                  <video
-                    class="reel-video-element"
-                    id="reelVideo3"
-                    playsinline
-                    loop
-                    preload="metadata"
-                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 640' fill='%230a0b0d'%3E%3Crect width='360' height='640' fill='%230e1014'/%3E%3Ccircle cx='180' cy='240' r='90' fill='%23171a21' opacity='0.7'/%3E%3Ctext x='180' y='210' font-family='monospace' font-size='13' fill='%23a5b4fc' text-anchor='middle' font-weight='600'%3E%2F%2F 9:16 REEL 03%3C/text%3E%3Ctext x='180' y='245' font-family='monospace' font-size='20' fill='%23f0f2f5' text-anchor='middle' font-weight='700'%3ESystem Breakdown%3C/text%3E%3Ctext x='180' y='275' font-family='monospace' font-size='11' fill='%239da3af' text-anchor='middle'%3EHardware &amp; Logic Gates%3C/text%3E%3Crect x='40' y='380' width='280' height='1' fill='%23262b35'/%3E%3Ctext x='180' y='420' font-family='monospace' font-size='10' fill='%235e6573' text-anchor='middle'%3ESHORT-FORM %E2%80%A2 SOUND %E2%80%A2 0:35%3C/text%3E%3C/svg%3E"
-                  >
-                    <!-- User video source placeholder -->
-                    <source src="./assets/videos/reel3.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-
-                  <!-- Top Bar: Ratio & Duration -->
-                  <div class="video-card-topbar">
-                    <span class="reel-ratio-badge">9:16 REEL</span>
-                    <span class="reel-time-badge">0:35</span>
-                  </div>
-
-                  <!-- Play/Pause Button Overlay -->
-                  <div class="video-play-overlay" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                    </svg>
-                  </div>
-
-                  <!-- Sound Mute/Unmute Toggle Button -->
-                  <button
-                    type="button"
-                    class="video-sound-btn"
-                    id="soundBtn3"
-                    aria-label="Toggle sound for Reel 3"
-                    title="Toggle audio"
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                      <line x1="23" y1="9" x2="17" y2="15"></line>
-                      <line x1="17" y1="9" x2="23" y2="15"></line>
-                    </svg>
-                  </button>
-
-                  <!-- Bottom Caption & Tags -->
-                  <div class="video-card-bottom">
-                    <h4 class="video-card-title">Computer Systems &amp; Hardware</h4>
-                    <p class="video-card-caption">Visual breakdown of microprocessors, circuit logic, and hardware fundamentals.</p>
-                    <div class="video-card-tags">
-                      <span class="tag-badge">HARDWARE</span>
-                      <span class="tag-badge">SOUND DESIGN</span>
-                      <span class="tag-badge">TIKTOK</span>
+                      <span class="tag-badge">BALAI</span>
+                      <span class="tag-badge">APP SHOWCASE</span>
+                      <span class="tag-badge">UI/UX</span>
                     </div>
                   </div>
                 </div>
@@ -767,9 +707,9 @@
 
             <!-- ==============================================================
                  SUBSECTION B: Media Graphics & Visual Edits
-                 Positioned directly below the 3 video panels
+                 (Hidden for now per user request; cleanly preserved)
                  ============================================================== -->
-            <div class="multimedia-block" id="mediaGraphicsBlock">
+            <div class="multimedia-block is-hidden" id="mediaGraphicsBlock" style="display: none;" aria-hidden="true">
               <div class="multimedia-subheading">
                 <h3 class="multimedia-subtitle">
                   <span class="prefix">&gt;</span> Media Graphics &amp; Visual Edits
