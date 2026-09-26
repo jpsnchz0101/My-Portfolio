@@ -138,13 +138,22 @@ export const VideoReelsSection: React.FC = () => {
     const bundled = getBundledVideo(slotNum);
     if (bundled) return bundled;
 
+    const base = import.meta.env.BASE_URL || './';
+    const cleanBase = base.endsWith('/') ? base : `${base}/`;
+
     const candidates = [
+      `${cleanBase}video/${slotNum}.mp4`,
+      `./video/${slotNum}.mp4`,
       `/video/${slotNum}.mp4`,
       `/src/assets/video/${slotNum}.mp4`,
       `/assets/video/${slotNum}.mp4`,
+      `${cleanBase}video/${slotNum}.mov`,
+      `./video/${slotNum}.mov`,
       `/video/${slotNum}.mov`,
       `/src/assets/video/${slotNum}.mov`,
       `/assets/video/${slotNum}.mov`,
+      `${cleanBase}video/${slotNum}.webm`,
+      `./video/${slotNum}.webm`,
       `/video/${slotNum}.webm`,
       `/src/assets/video/${slotNum}.webm`,
       `/videos/${slotNum}.mp4`,
@@ -324,7 +333,9 @@ export const VideoReelsSection: React.FC = () => {
             const currentProgress = progresses[slot.index] || 0;
             const timeDisplay = `${currentTimes[slot.index] || '0:00'} / ${durations[slot.index] || '0:15'}`;
             const currentRate = playbackRates[slot.index] || 1;
-            const posterUrl = `/video/posters/${slot.index}_poster.jpg`;
+            const base = import.meta.env.BASE_URL || './';
+            const cleanBase = base.endsWith('/') ? base : `${base}/`;
+            const posterUrl = `${cleanBase}video/posters/${slot.index}_poster.jpg`;
             const glare = glareStates[slot.index] || { x: 50, y: 50, rx: 0, ry: 0, active: false };
 
             return (
