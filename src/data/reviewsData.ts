@@ -1,0 +1,88 @@
+import { ReviewItem } from '../types';
+
+export const CUSTOMER_REVIEWS: ReviewItem[] = [
+  {
+    id: 'rev-1',
+    name: 'Marcus Vance',
+    role: 'Head of Growth & Marketing',
+    company: 'Apex Media Labs',
+    avatarInitials: 'MV',
+    rating: 5,
+    date: 'Q4 2025',
+    verified: true,
+    projectScope: '9:16 Video Reels & Kinetic Motion Pipeline',
+    serviceCategory: 'multimedia',
+    comment:
+      'John Paulo transformed our raw video footage into high-retention 9:16 reels that doubled our organic TikTok and Instagram reach within 60 days. His pacing, kinetic typography, and audio sync are top-tier.',
+  },
+  {
+    id: 'rev-2',
+    name: 'Elena Rostova',
+    role: 'Lead Product Engineer',
+    company: 'Veloce Tech',
+    avatarInitials: 'ER',
+    rating: 5,
+    date: 'Q1 2026',
+    verified: true,
+    projectScope: 'Real-Time Telemetry Dashboard (React + TypeScript)',
+    serviceCategory: 'web',
+    comment:
+      'Working with JP on our analytics interface was effortless. He built a blazing-fast, responsive dashboard with exceptional attention to monospace typography, state management, and subtle micro-interactions. Zero regressions on delivery.',
+  },
+  {
+    id: 'rev-3',
+    name: 'David Chen',
+    role: 'Founder & Creative Director',
+    company: 'Horizon Studio',
+    avatarInitials: 'DC',
+    rating: 5,
+    date: 'Q3 2025',
+    verified: true,
+    projectScope: 'Brand System & Figma Interactive Prototype',
+    serviceCategory: 'design',
+    comment:
+      'From initial wireframing in Figma to the final interactive prototype and multimedia assets, JP delivered well ahead of schedule. An engineer who genuinely understands aesthetic motion, brand coherence, and user flow.',
+  },
+  {
+    id: 'rev-4',
+    name: 'Sarah Jenkins',
+    role: 'Creative Producer',
+    company: 'Pulse Digital',
+    avatarInitials: 'SJ',
+    rating: 5,
+    date: 'Q2 2025',
+    verified: true,
+    projectScope: 'Short-Form Motion Graphics & Viral Cuts',
+    serviceCategory: 'multimedia',
+    comment:
+      "JP's turnaround speed and creative intuition are remarkable. He handled tight deadlines for our product launches, delivering pixel-perfect motion graphics and high-fidelity video cuts with zero micromanagement required.",
+  },
+  {
+    id: 'rev-5',
+    name: 'Carlos Mendoza',
+    role: 'Operations Lead',
+    company: 'Zenith Systems',
+    avatarInitials: 'CM',
+    rating: 5,
+    date: 'Q4 2024',
+    verified: true,
+    projectScope: 'Full-Stack Community Ledger & Database Architecture',
+    serviceCategory: 'web',
+    comment:
+      'Exceptional technical execution. He re-engineered our legacy administrative portal into a modern, accessible web system with clean database schemas and intuitive workflows. Highly communicative and deeply dedicated to craft.',
+  },
+  {
+    id: 'rev-6',
+    name: 'Aria Thorne',
+    role: 'Content Strategist',
+    company: 'Lumina Brand Agency',
+    avatarInitials: 'AT',
+    rating: 5,
+    date: 'Q1 2026',
+    verified: true,
+    projectScope: 'UI Style Guide & Digital Campaign Assets',
+    serviceCategory: 'design',
+    comment:
+      "The design system JP crafted brought instant credibility to our client's launch. The crisp monospace typography, dark mode balance, and liquid glass interactions gave our campaign a world-class edge.",
+  },
+];

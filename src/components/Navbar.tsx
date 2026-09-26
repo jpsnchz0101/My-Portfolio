@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { id: 'multimedia', label: 'Multimedia' },
   { id: 'workflow', label: 'Workflow' },
   { id: 'skills', label: 'Skills' },
+  { id: 'reviews', label: 'Reviews' },
   { id: 'contacts', label: 'Contacts' },
 ];
 

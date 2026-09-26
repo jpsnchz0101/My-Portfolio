@@ -56,3 +56,18 @@ export interface WorkflowPhase {
   summary: string;
   deliverables: string[];
 }
+
+export interface ReviewItem {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  avatarInitials: string;
+  rating: number;
+  date: string;
+  verified: boolean;
+  projectScope: string;
+  serviceCategory: 'web' | 'multimedia' | 'design';
+  comment: string;
+}
+

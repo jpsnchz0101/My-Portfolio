@@ -9,6 +9,7 @@ import { ProjectsSection } from './components/ProjectsSection';
 import { VideoReelsSection } from './components/VideoReelsSection';
 import { WorkflowSection } from './components/WorkflowSection';
 import { SkillsSection } from './components/SkillsSection';
+import { ReviewsSection } from './components/ReviewsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { TerminalModal } from './components/TerminalModal';
@@ -46,6 +47,7 @@ export function AppContent() {
           <VideoReelsSection />
           <WorkflowSection />
           <SkillsSection />
+          <ReviewsSection />
           <ContactSection />
         </main>
 

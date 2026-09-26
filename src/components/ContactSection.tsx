@@ -56,7 +56,7 @@ export const ContactSection: React.FC = () => {
       {/* Section Header */}
       <div className="flex items-center gap-3 mb-6">
         <h2 className="text-xs uppercase tracking-widest text-[var(--text-muted)] font-medium">
-          <span className="text-[var(--accent-code)] font-bold">07 —</span> contacts
+          <span className="text-[var(--accent-code)] font-bold">08 —</span> contacts
         </h2>
         <div className="flex-1 h-[1px] bg-[var(--border-subtle)]" aria-hidden="true" />
       </div>
