@@ -1,1 +1,93 @@
 @import "tailwindcss";
+
+:root {
+  /* Light Mode (Editorial Monochrome Paper / High Contrast) */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --border-subtle: #cbd5e1;
+  --border-hover: #94a3b8;
+  --border-active: #059669;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --accent-code: #059669;
+  --accent-secondary: #4f46e5;
+  --accent-cyan: #0284c7;
+  --accent-glow: #10b981;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.dark, [data-theme="dark"] {
+  /* Dark Mode (Cyberpunk Obsidian Monospace) */
+  --bg-primary: #0b0d11;
+  --bg-secondary: #11141a;
+  --bg-tertiary: #171b23;
+  --bg-card: #131720;
+  --bg-card-hover: #191e2a;
+  --border-subtle: #242b38;
+  --border-hover: #3b465c;
+  --border-active: #10b981;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-code: #10b981;
+  --accent-secondary: #a5b4fc;
+  --accent-cyan: #38bdf8;
+  --accent-glow: #10b981;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-mono);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark body {
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+}
+
+.light body {
+  background-image: radial-gradient(
+    circle,
+    rgba(15, 23, 42, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
