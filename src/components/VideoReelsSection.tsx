@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback, memo } from 'react';
 import {
   Play,
   Pause,
@@ -6,13 +6,13 @@ import {
   VolumeX,
   Maximize2,
   X,
-  RotateCcw,
   UploadCloud,
   Film,
   Sparkles,
+  Loader2,
 } from 'lucide-react';
 
-interface ReelSlot {
+export interface ReelSlot {
   index: number; // 1 to 6
   id: string;
   defaultTitle: string;
@@ -20,7 +20,7 @@ interface ReelSlot {
   tags: string[];
 }
 
-const REEL_SLOTS: ReelSlot[] = [
+export const REEL_SLOTS: ReelSlot[] = [
   {
     index: 1,
     id: 'reel-1',
@@ -65,15 +65,17 @@ const REEL_SLOTS: ReelSlot[] = [
   },
 ];
 
-// Vite glob resolver for static assets in src/assets/video/
+// Eagerly resolve any bundled static video assets if placed in src/assets/video/
 const bundledVideos: Record<string, string> = (import.meta as unknown as {
-  glob: (pattern: string, options: { eager: boolean; query: string; import: string }) => Record<string, string>;
+  glob: (pattern: string, options: { eager: boolean; query?: string; import?: string }) => Record<string, string>;
 }).glob?.(
   '/src/assets/video/*.{mp4,mov,webm,MP4,MOV,WEBM}',
   { eager: true, query: '?url', import: 'default' }
 ) || {};
 
-function getBundledVideo(slotNum: number): string | null {
+function resolveSlotVideo(slotNum: number, customUrl?: string | null): string {
+  if (customUrl) return customUrl;
+
   for (const [path, url] of Object.entries(bundledVideos)) {
     const filename = path.split('/').pop() || '';
     const baseName = filename.split('.')[0].toLowerCase();
@@ -81,237 +83,461 @@ function getBundledVideo(slotNum: number): string | null {
       return url as string;
     }
   }
-  return null;
+
+  // Fallback to static public folder direct URL
+  const base = import.meta.env.BASE_URL || '/';
+  const cleanBase = base.endsWith('/') ? base : `${base}/`;
+  return `${cleanBase}video/${slotNum}.mp4`;
 }
 
-export const VideoReelsSection: React.FC = () => {
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const [mutedStates, setMutedStates] = useState<Record<string, boolean>>({
-    'reel-1': true,
-    'reel-2': true,
-    'reel-3': true,
-    'reel-4': true,
-    'reel-5': true,
-    'reel-6': true,
-  });
+function formatTime(seconds: number): string {
+  if (isNaN(seconds) || seconds < 0) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
 
-  // Track active sources for slots 1 through 6
-  const [activeSources, setActiveSources] = useState<Record<number, string | null>>(() => {
-    const initial: Record<number, string | null> = {
-      1: null,
-      2: null,
-      3: null,
-      4: null,
-      5: null,
-      6: null,
-    };
-    for (let i = 1; i <= 6; i++) {
-      const bundled = getBundledVideo(i);
-      if (bundled) {
-        initial[i] = bundled;
-      }
-    }
-    return initial;
-  });
+interface ReelCardProps {
+  slot: ReelSlot;
+  isPlaying: boolean;
+  onTogglePlay: (id: string) => void;
+  onOpenModal: (slot: ReelSlot) => void;
+  customSrc: string | null;
+  onSelectCustomFile: (slotIndex: number, blobUrl: string) => void;
+}
 
-  // Playback state per slot
-  const [progresses, setProgresses] = useState<Record<number, number>>({});
-  const [currentTimes, setCurrentTimes] = useState<Record<number, string>>({});
-  const [durations, setDurations] = useState<Record<number, string>>({});
-  const [rawDurations, setRawDurations] = useState<Record<number, number>>({});
-  const [playbackRates, setPlaybackRates] = useState<Record<number, number>>({
-    1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
-  });
+/**
+ * Isolated ReelCard component:
+ * - Completely local progress & scrubber updates (does not re-render neighbor cards).
+ * - Butter-smooth 120fps 3D tilt via CSS custom variables in requestAnimationFrame.
+ * - preload="metadata" to eliminate network bottlenecks; buffers on hover or play.
+ * - Race-safe play/pause promises to avoid unhandled AbortErrors.
+ * - Automatic pause on scroll out of viewport via IntersectionObserver.
+ */
+const ReelCardComponent: React.FC<ReelCardProps> = ({
+  slot,
+  isPlaying,
+  onTogglePlay,
+  onOpenModal,
+  customSrc,
+  onSelectCustomFile,
+}) => {
+  const [isMuted, setIsMuted] = useState<boolean>(true);
+  const [playbackRate, setPlaybackRate] = useState<number>(1);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
+  const [progress, setProgress] = useState<number>(0);
+  const [isBuffering, setIsBuffering] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
 
-  // 3D Glass tilt & cursor glare tracking
-  const [glareStates, setGlareStates] = useState<Record<number, { x: number; y: number; rx: number; ry: number; active: boolean }>>({});
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const playPromiseRef = useRef<Promise<void> | null>(null);
+  const rafTiltRef = useRef<number | null>(null);
 
-  // Lightbox / Modal inspect state
-  const [activeModalSlot, setActiveModalSlot] = useState<ReelSlot | null>(null);
+  const base = import.meta.env.BASE_URL || '/';
+  const cleanBase = base.endsWith('/') ? base : `${base}/`;
+  const posterUrl = `${cleanBase}video/posters/${slot.index}_poster.jpg`;
+  const currentVideoSrc = resolveSlotVideo(slot.index, customSrc);
 
-  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
-  const fileInputRefs = useRef<Record<number, HTMLInputElement | null>>({});
-  const modalVideoRef = useRef<HTMLVideoElement | null>(null);
-
-  // Discover video files on server
-  const testCandidateUrls = useCallback(async (slotNum: number): Promise<string | null> => {
-    const bundled = getBundledVideo(slotNum);
-    if (bundled) return bundled;
-
-    const base = import.meta.env.BASE_URL || './';
-    const cleanBase = base.endsWith('/') ? base : `${base}/`;
-
-    const candidates = [
-      `${cleanBase}video/${slotNum}.mp4`,
-      `./video/${slotNum}.mp4`,
-      `/video/${slotNum}.mp4`,
-      `/src/assets/video/${slotNum}.mp4`,
-      `/assets/video/${slotNum}.mp4`,
-      `${cleanBase}video/${slotNum}.mov`,
-      `./video/${slotNum}.mov`,
-      `/video/${slotNum}.mov`,
-      `/src/assets/video/${slotNum}.mov`,
-      `/assets/video/${slotNum}.mov`,
-      `${cleanBase}video/${slotNum}.webm`,
-      `./video/${slotNum}.webm`,
-      `/video/${slotNum}.webm`,
-      `/src/assets/video/${slotNum}.webm`,
-      `/videos/${slotNum}.mp4`,
-    ];
-
-    for (const url of candidates) {
-      try {
-        const res = await fetch(url, { method: 'HEAD' });
-        const contentType = res.headers.get('content-type') || '';
-        if (res.ok && res.status === 200 && !contentType.includes('text/html')) {
-          return url;
-        }
-      } catch {
-        // Continue
-      }
-    }
-    return null;
-  }, []);
-
-  const scanForVideos = useCallback(async () => {
-    for (let i = 1; i <= 6; i++) {
-      if (activeSources[i]?.startsWith('blob:')) continue;
-      const foundUrl = await testCandidateUrls(i);
-      if (foundUrl && foundUrl !== activeSources[i]) {
-        setActiveSources((prev) => ({ ...prev, [i]: foundUrl }));
-      }
-    }
-  }, [activeSources, testCandidateUrls]);
-
+  // Synchronize playing state with safety against browser AbortError
   useEffect(() => {
-    scanForVideos();
-    const interval = setInterval(scanForVideos, 5000);
-    return () => clearInterval(interval);
-  }, [scanForVideos]);
+    const video = videoRef.current;
+    if (!video) return;
 
-  const formatTime = (seconds: number) => {
-    if (isNaN(seconds) || seconds < 0) return '0:00';
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  };
-
-  const togglePlay = (id: string, slotNum: number) => {
-    const video = videoRefs.current[id];
-    if (!video || !activeSources[slotNum]) {
-      fileInputRefs.current[slotNum]?.click();
-      return;
-    }
-
-    if (playingId === id) {
-      video.pause();
-      setPlayingId(null);
+    if (isPlaying) {
+      setIsBuffering(video.readyState < 3);
+      const promise = video.play();
+      if (promise !== undefined) {
+        playPromiseRef.current = promise;
+        promise
+          .then(() => {
+            playPromiseRef.current = null;
+            setIsBuffering(false);
+          })
+          .catch((err) => {
+            playPromiseRef.current = null;
+            setIsBuffering(false);
+            if (err.name === 'NotAllowedError') {
+              // Autoplay with audio was blocked by browser; force mute & retry
+              video.muted = true;
+              setIsMuted(true);
+              video.play().catch((e) => console.warn('Muted retry notice:', e));
+            } else if (err.name !== 'AbortError') {
+              console.warn('Video playback warning:', err);
+            }
+          });
+      }
     } else {
-      // Pause all other videos
-      Object.entries(videoRefs.current).forEach(([otherId, otherVideo]) => {
-        const otherEl = otherVideo as HTMLVideoElement | null;
-        if (otherId !== id && otherEl && !otherEl.paused) {
-          otherEl.pause();
-        }
-      });
-
-      video.play().then(() => {
-        setPlayingId(id);
-      }).catch((err) => {
-        console.warn('Playback notice:', err);
-      });
+      if (playPromiseRef.current) {
+        playPromiseRef.current
+          .then(() => {
+            if (videoRef.current && !isPlaying) {
+              videoRef.current.pause();
+            }
+          })
+          .catch(() => {
+            if (videoRef.current) videoRef.current.pause();
+          });
+      } else {
+        video.pause();
+      }
+      setIsBuffering(false);
     }
-  };
+  }, [isPlaying]);
 
-  const toggleMute = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    const video = videoRefs.current[id];
+  // Pause card if it scrolls significantly out of viewport
+  useEffect(() => {
+    const cardEl = cardRef.current;
+    if (!cardEl) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting && isPlaying) {
+            onTogglePlay(slot.id);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(cardEl);
+    return () => observer.disconnect();
+  }, [isPlaying, onTogglePlay, slot.id]);
+
+  // Video event handlers
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
     if (!video) return;
-
-    const nextMuted = !video.muted;
-    video.muted = nextMuted;
-    setMutedStates((prev) => ({ ...prev, [id]: nextMuted }));
+    const cur = video.currentTime;
+    const dur = video.duration || duration || 0;
+    setCurrentTime(cur);
+    if (dur > 0) {
+      setProgress((cur / dur) * 100);
+    }
   };
 
-  const cyclePlaybackRate = (e: React.MouseEvent, id: string, slotNum: number) => {
-    e.stopPropagation();
-    const video = videoRefs.current[id];
+  const handleLoadedMetadata = () => {
+    const video = videoRef.current;
     if (!video) return;
-
-    const rates = [1, 1.25, 1.5, 2];
-    const current = playbackRates[slotNum] || 1;
-    const nextRate = rates[(rates.indexOf(current) + 1) % rates.length];
-
-    video.playbackRate = nextRate;
-    setPlaybackRates((prev) => ({ ...prev, [slotNum]: nextRate }));
+    setDuration(video.duration || 0);
+    setHasError(false);
   };
 
-  const handleTimeUpdate = (slotNum: number, e: React.SyntheticEvent<HTMLVideoElement>) => {
-    const video = e.currentTarget;
-    if (video.duration && !isNaN(video.duration)) {
-      const prog = (video.currentTime / video.duration) * 100;
-      setProgresses((prev) => ({ ...prev, [slotNum]: prog }));
-      setCurrentTimes((prev) => ({ ...prev, [slotNum]: formatTime(video.currentTime) }));
-    }
-  };
-
-  const handleLoadedMetadata = (slotNum: number, e: React.SyntheticEvent<HTMLVideoElement>) => {
-    const video = e.currentTarget;
-    if (video.duration && !isNaN(video.duration)) {
-      setRawDurations((prev) => ({ ...prev, [slotNum]: video.duration }));
-      setDurations((prev) => ({ ...prev, [slotNum]: formatTime(video.duration) }));
-    }
-  };
-
-  // Interactive scrubber seek
-  const handleScrubberClick = (e: React.MouseEvent<HTMLDivElement>, id: string, slotNum: number) => {
-    e.stopPropagation();
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const pct = Math.max(0, Math.min(1, clickX / rect.width));
-    const video = videoRefs.current[id];
-    if (video && video.duration) {
-      video.currentTime = pct * video.duration;
-      setProgresses((prev) => ({ ...prev, [slotNum]: pct * 100 }));
-    }
-  };
-
-  // 3D Liquid Tilt & Glare Handlers
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, slotNum: number) => {
-    const rect = e.currentTarget.getBoundingClientRect();
+  // High-performance direct CSS variable 3D tilt tracking (0 React re-renders)
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const cx = rect.width / 2;
     const cy = rect.height / 2;
+    const rx = ((y - cy) / cy) * -3.8;
+    const ry = ((x - cx) / cx) * 3.8;
+    const gx = Math.round((x / rect.width) * 100);
+    const gy = Math.round((y / rect.height) * 100);
 
-    // Subtle 3D tilt (-4 to +4 degrees)
-    const rx = ((y - cy) / cy) * -4.5;
-    const ry = ((x - cx) / cx) * 4.5;
-
-    setGlareStates((prev) => ({
-      ...prev,
-      [slotNum]: {
-        x: Math.round((x / rect.width) * 100),
-        y: Math.round((y / rect.height) * 100),
-        rx,
-        ry,
-        active: true,
-      },
-    }));
+    if (rafTiltRef.current) cancelAnimationFrame(rafTiltRef.current);
+    rafTiltRef.current = requestAnimationFrame(() => {
+      if (!cardRef.current) return;
+      cardRef.current.style.setProperty('--rx', `${rx.toFixed(2)}deg`);
+      cardRef.current.style.setProperty('--ry', `${ry.toFixed(2)}deg`);
+      cardRef.current.style.setProperty('--glare-x', `${gx}%`);
+      cardRef.current.style.setProperty('--glare-y', `${gy}%`);
+      cardRef.current.style.setProperty('--glare-opacity', '1');
+    });
   };
 
-  const handleMouseLeave = (slotNum: number) => {
-    setGlareStates((prev) => ({
-      ...prev,
-      [slotNum]: { x: 50, y: 50, rx: 0, ry: 0, active: false },
-    }));
+  const handleMouseEnter = () => {
+    setIsHovered(true);
   };
 
-  // Open modal lightbox
-  const openModal = (e: React.MouseEvent, slot: ReelSlot) => {
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (rafTiltRef.current) cancelAnimationFrame(rafTiltRef.current);
+    if (cardRef.current) {
+      cardRef.current.style.setProperty('--rx', '0deg');
+      cardRef.current.style.setProperty('--ry', '0deg');
+      cardRef.current.style.setProperty('--glare-opacity', '0');
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setActiveModalSlot(slot);
+    const video = videoRef.current;
+    if (!video) return;
+    const nextMuted = !video.muted;
+    video.muted = nextMuted;
+    setIsMuted(nextMuted);
   };
+
+  const cyclePlaybackRate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+    const rates = [1, 1.25, 1.5, 2];
+    const nextRate = rates[(rates.indexOf(playbackRate) + 1) % rates.length];
+    video.playbackRate = nextRate;
+    if ('preservesPitch' in video) {
+      (video as HTMLVideoElement & { preservesPitch: boolean }).preservesPitch = true;
+    }
+    setPlaybackRate(nextRate);
+  };
+
+  const handleScrubberClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video || !duration) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+    const seekTime = (clickX / rect.width) * duration;
+
+    video.currentTime = seekTime;
+    setCurrentTime(seekTime);
+    setProgress((seekTime / duration) * 100);
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => onTogglePlay(slot.id)}
+      style={{
+        transform: 'perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))',
+        transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.35s ease-out',
+        willChange: 'transform',
+      }}
+      className={`relative aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer flex flex-col justify-between group select-none transition-shadow duration-300 border bg-[#0d1017] ${
+        isPlaying
+          ? 'border-[var(--accent-code)] shadow-[0_16px_40px_rgba(0,0,0,0.7),0_0_25px_rgba(16,185,129,0.25)] ring-1 ring-[var(--accent-code)]/40'
+          : 'border-white/15 hover:border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.45)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.65)]'
+      }`}
+      role="region"
+      aria-label={`Video Reel 0${slot.index}: ${slot.defaultTitle}`}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onTogglePlay(slot.id);
+        }
+      }}
+    >
+      {/* Hidden File Input for Custom Video Upload */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="video/mp4,video/quicktime,video/webm"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            const blobUrl = URL.createObjectURL(file);
+            onSelectCustomFile(slot.index, blobUrl);
+          }
+        }}
+      />
+
+      {/* 1. Direct CSS Specular Glare (Hardware-accelerated, zero React re-render overhead) */}
+      <div
+        className="absolute inset-0 pointer-events-none z-20 rounded-2xl transition-opacity duration-150"
+        style={{
+          opacity: 'var(--glare-opacity, 0)',
+          background:
+            'radial-gradient(circle 280px at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04) 40%, transparent 70%)',
+        }}
+      />
+
+      {/* 2. Glass Rim Subtle Sheen */}
+      <div className="absolute inset-0 pointer-events-none z-10 rounded-2xl shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.35),inset_0_-1px_1.5px_rgba(0,0,0,0.5)]" />
+
+      {/* 3. HTML5 Video Element */}
+      {!hasError ? (
+        <>
+          <video
+            ref={videoRef}
+            src={currentVideoSrc}
+            poster={posterUrl}
+            className="absolute inset-0 w-full h-full object-cover transform-gpu transition-transform duration-300 group-hover:scale-[1.015]"
+            playsInline
+            loop
+            preload={isHovered || isPlaying ? 'auto' : 'metadata'}
+            muted={isMuted}
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
+            onWaiting={() => setIsBuffering(true)}
+            onPlaying={() => setIsBuffering(false)}
+            onCanPlay={() => setIsBuffering(false)}
+            onError={() => setHasError(true)}
+          />
+
+          {/* Buffering Indicator */}
+          {isBuffering && isPlaying && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-25 bg-black/35 backdrop-blur-[2px]">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/75 border border-white/20 text-white text-[11px]">
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-[var(--accent-code)]" />
+                <span>Buffering...</span>
+              </div>
+            </div>
+          )}
+
+          {/* Center Play/Pause Disc Overlay */}
+          <div
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-200 pointer-events-none z-20 ${
+              isPlaying
+                ? 'opacity-0 scale-90 group-hover:opacity-90 group-hover:scale-100'
+                : 'opacity-95 scale-100'
+            }`}
+          >
+            <div className="w-13 h-13 rounded-full bg-black/60 backdrop-blur-md border border-white/35 flex items-center justify-center text-white shadow-[0_8px_25px_rgba(0,0,0,0.6)]">
+              {isPlaying ? (
+                <Pause className="w-5 h-5 fill-current" />
+              ) : (
+                <Play className="w-5 h-5 fill-current ml-0.5" />
+              )}
+            </div>
+          </div>
+        </>
+      ) : (
+        /* Fallback State */
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-black/60 z-10">
+          <div className="w-12 h-12 rounded-xl border border-white/20 bg-white/10 flex items-center justify-center mb-3 text-[var(--accent-code)]">
+            <Film className="w-5 h-5" />
+          </div>
+          <span className="text-xs font-bold text-white mb-1">
+            Reel 0{slot.index}
+          </span>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              fileInputRef.current?.click();
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] bg-white/15 hover:bg-white/25 border border-white/30 text-white rounded-lg transition-colors cursor-pointer mt-2"
+          >
+            <UploadCloud className="w-3 h-3" />
+            <span>Select Local Video</span>
+          </button>
+        </div>
+      )}
+
+      {/* TOP FLOATING HEADER TRAY */}
+      <div className="relative z-30 flex items-center justify-between p-3 pointer-events-auto">
+        {/* Slot Number & Aspect Ratio Pill */}
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/20 text-white text-[10px] shadow-sm">
+          <span className="text-[var(--accent-code)] font-bold">0{slot.index}</span>
+          <span className="text-white/40">·</span>
+          <span className="text-white/80 font-medium">9:16</span>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="flex items-center gap-1.5">
+          {/* Speed Toggle */}
+          <button
+            type="button"
+            onClick={cyclePlaybackRate}
+            className="px-2 py-0.5 rounded-full bg-black/65 backdrop-blur-md border border-white/20 hover:border-white/50 text-white text-[9px] font-semibold transition-colors cursor-pointer"
+            title="Cycle playback speed"
+          >
+            {playbackRate}x
+          </button>
+
+          {/* Sound Toggle */}
+          <button
+            type="button"
+            onClick={toggleMute}
+            className="p-1.5 rounded-full bg-black/65 backdrop-blur-md border border-white/20 hover:border-white/50 text-white transition-colors cursor-pointer"
+            title={isMuted ? 'Unmute audio' : 'Mute audio'}
+          >
+            {isMuted ? (
+              <VolumeX className="w-3 h-3 text-red-400" />
+            ) : (
+              <Volume2 className="w-3 h-3 text-[var(--accent-code)]" />
+            )}
+          </button>
+
+          {/* Lightbox / Expand */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenModal(slot);
+            }}
+            className="p-1.5 rounded-full bg-black/65 backdrop-blur-md border border-white/20 hover:border-white/50 text-white transition-colors cursor-pointer"
+            title="Inspect in lightbox modal"
+          >
+            <Maximize2 className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+
+      {/* BOTTOM SCRUBBER & TITLE TRAY */}
+      <div className="relative z-30 p-3 pt-6 bg-gradient-to-t from-black/95 via-black/75 to-transparent text-white pointer-events-auto">
+        {/* Interactive Scrubber Bar */}
+        <div className="mb-2">
+          <div
+            onClick={handleScrubberClick}
+            className="w-full h-2 rounded-full bg-white/20 relative cursor-pointer group/scrub overflow-hidden border border-white/10"
+            title="Click or drag to seek"
+          >
+            <div
+              className="h-full bg-gradient-to-r from-[var(--accent-code)] via-emerald-400 to-[var(--accent-cyan)] rounded-full transition-all duration-75 shadow-[0_0_8px_rgba(16,185,129,0.7)]"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+
+          <div className="flex items-center justify-between text-[9px] text-white/80 mt-1">
+            <span>
+              {formatTime(currentTime)} / {formatTime(duration || 15)}
+            </span>
+            <span
+              className={`font-semibold ${
+                isPlaying ? 'text-[var(--accent-code)]' : 'text-white/50'
+              }`}
+            >
+              {isPlaying ? '● PLAYING' : 'PAUSED'}
+            </span>
+          </div>
+        </div>
+
+        {/* Clean Title */}
+        <h4 className="text-[12px] font-bold tracking-tight text-white line-clamp-1 mb-0.5">
+          {slot.defaultTitle}
+        </h4>
+        <p className="text-[10px] text-white/70 line-clamp-1">
+          {slot.defaultCaption}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// Memoize ReelCard so updates to one video don't re-render the other 5 cards
+export const ReelCard = memo(ReelCardComponent);
+
+export const VideoReelsSection: React.FC = () => {
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const [activeModalSlot, setActiveModalSlot] = useState<ReelSlot | null>(null);
+  const [customSources, setCustomSources] = useState<Record<number, string | null>>({});
+
+  const togglePlay = useCallback((id: string) => {
+    setPlayingId((prev) => (prev === id ? null : id));
+  }, []);
+
+  const handleOpenModal = useCallback((slot: ReelSlot) => {
+    // Pause background grid playing video when lightbox opens
+    setPlayingId(null);
+    setActiveModalSlot(slot);
+  }, []);
+
+  const handleSelectCustomFile = useCallback((slotIndex: number, blobUrl: string) => {
+    setCustomSources((prev) => ({ ...prev, [slotIndex]: blobUrl }));
+  }, []);
 
   return (
     <section id="multimedia" className="py-12 font-mono scroll-mt-20">
@@ -323,259 +549,47 @@ export const VideoReelsSection: React.FC = () => {
         <div className="flex-1 h-[1px] bg-[var(--border-subtle)]" aria-hidden="true" />
       </div>
 
-      <div>
-        {/* 6-Panel Liquid Glass Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {REEL_SLOTS.map((slot) => {
-            const isPlaying = playingId === slot.id;
-            const isMuted = mutedStates[slot.id] ?? true;
-            const currentSrc = activeSources[slot.index];
-            const currentProgress = progresses[slot.index] || 0;
-            const timeDisplay = `${currentTimes[slot.index] || '0:00'} / ${durations[slot.index] || '0:15'}`;
-            const currentRate = playbackRates[slot.index] || 1;
-            const base = import.meta.env.BASE_URL || './';
-            const cleanBase = base.endsWith('/') ? base : `${base}/`;
-            const posterUrl = `${cleanBase}video/posters/${slot.index}_poster.jpg`;
-            const glare = glareStates[slot.index] || { x: 50, y: 50, rx: 0, ry: 0, active: false };
-
-            return (
-              <div
-                key={slot.id}
-                onMouseMove={(e) => handleMouseMove(e, slot.index)}
-                onMouseLeave={() => handleMouseLeave(slot.index)}
-                onClick={() => togglePlay(slot.id, slot.index)}
-                style={{
-                  transform: `perspective(900px) rotateX(${glare.rx}deg) rotateY(${glare.ry}deg)`,
-                  transition: glare.active ? 'transform 0.08s ease-out' : 'transform 0.4s ease-out',
-                }}
-                className={`relative aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer flex flex-col justify-between group transition-all duration-300 select-none ${
-                  isPlaying
-                    ? 'shadow-[0_20px_50px_rgba(0,0,0,0.65),0_0_30px_rgba(34,197,94,0.3)] border-white/45'
-                    : 'shadow-[0_12px_36px_rgba(0,0,0,0.45)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.6)] border-white/20 hover:border-white/45'
-                } border bg-white/[0.04] backdrop-blur-2xl`}
-                role="region"
-                aria-label={`Liquid Glass Reel ${slot.index}`}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    togglePlay(slot.id, slot.index);
-                  }
-                }}
-              >
-                {/* Hidden File Input for Direct Local Selection */}
-                <input
-                  ref={(el) => (fileInputRefs.current[slot.index] = el)}
-                  type="file"
-                  accept="video/mp4,video/quicktime,video/webm"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const blobUrl = URL.createObjectURL(file);
-                      setActiveSources((prev) => ({ ...prev, [slot.index]: blobUrl }));
-                    }
-                  }}
-                />
-
-                {/* 1. DYNAMIC SPECULAR GLARE LAYER (tracks mouse cursor on top of video) */}
-                <div
-                  className="absolute inset-0 pointer-events-none z-20 rounded-2xl transition-opacity duration-150"
-                  style={{
-                    background: glare.active
-                      ? `radial-gradient(circle 260px at ${glare.x}% ${glare.y}%, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.06) 40%, transparent 70%)`
-                      : 'transparent',
-                  }}
-                />
-
-                {/* 2. LIQUID CURVED LENS GLOSS (Apple-style frosted glass sheen) */}
-                <div
-                  className="absolute inset-0 pointer-events-none z-10 rounded-2xl opacity-60 group-hover:opacity-90 transition-opacity duration-300"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.06) 30%, transparent 60%)',
-                  }}
-                />
-
-                {/* 3. LIQUID DOUBLE-BEVEL INNER RIM HIGHLIGHT */}
-                <div className="absolute inset-0 pointer-events-none z-30 rounded-2xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.45),inset_0_-1.5px_2px_rgba(0,0,0,0.6)]" />
-
-                {/* VIDEO ELEMENT IF SOURCE AVAILABLE */}
-                {currentSrc ? (
-                  <>
-                    <video
-                      ref={(el) => (videoRefs.current[slot.id] = el)}
-                      key={currentSrc}
-                      src={currentSrc}
-                      poster={posterUrl}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                      playsInline
-                      loop
-                      preload="auto"
-                      muted={isMuted}
-                      onTimeUpdate={(e) => handleTimeUpdate(slot.index, e)}
-                      onLoadedMetadata={(e) => handleLoadedMetadata(slot.index, e)}
-                      onEnded={() => setPlayingId(null)}
-                    />
-
-                    {/* LIQUID CENTER PLAY/PAUSE DISC */}
-                    <div
-                      className={`absolute inset-0 flex items-center justify-center transition-all duration-200 pointer-events-none z-20 ${
-                        isPlaying ? 'opacity-0 scale-90 group-hover:opacity-95 group-hover:scale-100' : 'opacity-95 scale-100'
-                      }`}
-                    >
-                      <div className="w-13 h-13 rounded-full bg-black/50 backdrop-blur-xl border border-white/40 flex items-center justify-center text-white shadow-[0_8px_25px_rgba(0,0,0,0.6),inset_0_1.5px_2px_rgba(255,255,255,0.5)]">
-                        {isPlaying ? (
-                          <Pause className="w-5 h-5 fill-current" />
-                        ) : (
-                          <Play className="w-5 h-5 fill-current ml-0.5" />
-                        )}
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  /* Placeholder State */
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-black/45 backdrop-blur-xl z-10">
-                    <div className="w-12 h-12 rounded-xl border border-white/30 bg-white/10 backdrop-blur-md flex items-center justify-center mb-3 text-[var(--accent-code)] shadow-inner">
-                      <Film className="w-5 h-5" />
-                    </div>
-                    <span className="text-xs font-bold text-white mb-1">
-                      video/{slot.index}.mp4
-                    </span>
-                    <span className="text-[10px] text-white/60 mb-3">
-                      Slot 0{slot.index}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        fileInputRefs.current[slot.index]?.click();
-                      }}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 text-white rounded-lg transition-colors cursor-pointer"
-                    >
-                      <UploadCloud className="w-3 h-3" />
-                      <span>Select Video</span>
-                    </button>
-                  </div>
-                )}
-
-                {/* TOP FLOATING LIQUID GLASS HEADER BAR */}
-                <div className="relative z-30 flex items-center justify-between p-3 pointer-events-auto">
-                  {/* Slot & Ratio Liquid Badge */}
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-xl border border-white/25 text-white text-[10px] shadow-md">
-                    <span className="text-[var(--accent-code)] font-bold">0{slot.index}</span>
-                    <span className="text-white/40">·</span>
-                    <span className="text-white/80">9:16</span>
-                  </div>
-
-                  {/* Quick Action Buttons */}
-                  <div className="flex items-center gap-1.5">
-                    {/* Speed Toggle */}
-                    {currentSrc && (
-                      <button
-                        type="button"
-                        onClick={(e) => cyclePlaybackRate(e, slot.id, slot.index)}
-                        className="px-2 py-0.5 rounded-full bg-black/55 backdrop-blur-xl border border-white/25 hover:border-white/50 text-white text-[9px] transition-colors cursor-pointer"
-                        title="Cycle playback speed"
-                      >
-                        {currentRate}x
-                      </button>
-                    )}
-
-                    {/* Sound Button */}
-                    {currentSrc && (
-                      <button
-                        type="button"
-                        onClick={(e) => toggleMute(e, slot.id)}
-                        className="p-1.5 rounded-full bg-black/55 backdrop-blur-xl border border-white/25 hover:border-white/50 text-white transition-colors cursor-pointer"
-                        title={isMuted ? 'Unmute audio' : 'Mute audio'}
-                      >
-                        {isMuted ? (
-                          <VolumeX className="w-3 h-3 text-red-400" />
-                        ) : (
-                          <Volume2 className="w-3 h-3 text-[var(--accent-code)]" />
-                        )}
-                      </button>
-                    )}
-
-                    {/* Lightbox / Expand Button */}
-                    {currentSrc && (
-                      <button
-                        type="button"
-                        onClick={(e) => openModal(e, slot)}
-                        className="p-1.5 rounded-full bg-black/55 backdrop-blur-xl border border-white/25 hover:border-white/50 text-white transition-colors cursor-pointer"
-                        title="Expand liquid view"
-                      >
-                        <Maximize2 className="w-3 h-3" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* BOTTOM LIQUID GLASS SCRUBBER & TITLE TRAY */}
-                <div className="relative z-30 p-3 pt-6 bg-gradient-to-t from-black/95 via-black/75 to-transparent text-white pointer-events-auto">
-                  {/* Interactive Liquid Time Scrubber */}
-                  {currentSrc && (
-                    <div className="mb-2">
-                      <div
-                        onClick={(e) => handleScrubberClick(e, slot.id, slot.index)}
-                        className="w-full h-2 rounded-full bg-white/20 backdrop-blur-sm relative cursor-pointer group/scrub overflow-hidden border border-white/15"
-                        title="Click to seek"
-                      >
-                        <div
-                          className="h-full bg-gradient-to-r from-[var(--accent-code)] via-emerald-400 to-[var(--accent-cyan)] rounded-full transition-all duration-100 shadow-[0_0_10px_rgba(34,197,94,0.7)]"
-                          style={{ width: `${currentProgress}%` }}
-                        />
-                      </div>
-
-                      <div className="flex items-center justify-between text-[9px] text-white/75 mt-1">
-                        <span>{timeDisplay}</span>
-                        <span className="text-[var(--accent-code)] font-semibold">
-                          {isPlaying ? '● LIVE' : 'PAUSED'}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Clean Title */}
-                  <h4 className="text-[12px] font-bold tracking-tight text-white line-clamp-1">
-                    {slot.defaultTitle}
-                  </h4>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+      {/* Responsive 6-Slot Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {REEL_SLOTS.map((slot) => (
+          <ReelCard
+            key={slot.id}
+            slot={slot}
+            isPlaying={playingId === slot.id}
+            onTogglePlay={togglePlay}
+            onOpenModal={handleOpenModal}
+            customSrc={customSources[slot.index] || null}
+            onSelectCustomFile={handleSelectCustomFile}
+          />
+        ))}
       </div>
 
-      {/* FULLSCREEN LIQUID GLASS LIGHTBOX MODAL */}
+      {/* FULLSCREEN LIGHTBOX MODAL */}
       {activeModalSlot && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-xl animate-fadeIn"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md animate-fadeIn"
           onClick={() => setActiveModalSlot(null)}
+          role="dialog"
+          aria-modal="true"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-[420px] aspect-[9/16] rounded-3xl overflow-hidden border border-white/30 bg-black/60 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(34,197,94,0.3)] flex flex-col justify-between p-4"
+            className="relative w-full max-w-[420px] aspect-[9/16] rounded-3xl overflow-hidden border border-white/25 bg-black shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_40px_rgba(16,185,129,0.25)] flex flex-col justify-between p-4"
           >
-            {/* Modal Inner Glass Rim */}
-            <div className="absolute inset-0 pointer-events-none rounded-3xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),inset_0_-1px_2px_rgba(0,0,0,0.6)] z-20" />
-
-            {/* Video Player */}
-            {activeSources[activeModalSlot.index] && (
-              <video
-                ref={modalVideoRef}
-                src={activeSources[activeModalSlot.index]!}
-                className="absolute inset-0 w-full h-full object-cover"
-                autoPlay
-                controls
-                playsInline
-                loop
-              />
-            )}
+            {/* Modal Video Element */}
+            <video
+              src={resolveSlotVideo(activeModalSlot.index, customSources[activeModalSlot.index])}
+              poster={`${import.meta.env.BASE_URL || '/'}video/posters/${activeModalSlot.index}_poster.jpg`}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              controls
+              playsInline
+              loop
+            />
 
             {/* Top Modal Controls */}
-            <div className="relative z-30 flex items-center justify-between text-white">
-              <div className="flex items-center gap-2 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/20 text-xs">
+            <div className="relative z-30 flex items-center justify-between text-white pointer-events-auto">
+              <div className="flex items-center gap-2 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full border border-white/20 text-xs">
                 <Sparkles className="w-3.5 h-3.5 text-[var(--accent-code)]" />
                 <span className="font-bold">Reel 0{activeModalSlot.index}</span>
               </div>
@@ -583,16 +597,27 @@ export const VideoReelsSection: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setActiveModalSlot(null)}
-                className="p-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 hover:border-white/50 text-white transition-colors cursor-pointer"
+                className="p-2 rounded-full bg-black/70 backdrop-blur-md border border-white/20 hover:border-white/50 text-white transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Bottom Modal Footer */}
-            <div className="relative z-30 p-3 bg-black/70 backdrop-blur-md rounded-2xl border border-white/15 text-white">
-              <h3 className="text-sm font-bold">{activeModalSlot.defaultTitle}</h3>
+            {/* Bottom Modal Metadata */}
+            <div className="relative z-30 p-3.5 bg-black/80 backdrop-blur-md rounded-2xl border border-white/15 text-white pointer-events-auto">
+              <h3 className="text-sm font-bold mb-1">{activeModalSlot.defaultTitle}</h3>
+              <p className="text-xs text-white/70">{activeModalSlot.defaultCaption}</p>
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {activeModalSlot.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-white/80 font-mono"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>

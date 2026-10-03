@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PERSONAL_INFO, CORE_TECH_STACK, AI_TOOLS } from '../data/portfolioData';
 import { Github, Instagram, ArrowUpRight, Mail } from 'lucide-react';
+import { SpriteAvatar } from './SpriteAvatar';
 
 export const HeroSection: React.FC = () => {
-  const [imgError, setImgError] = useState(false);
-
   return (
     <section id="about" className="pt-2 pb-12 font-mono scroll-mt-20">
       {/* Section Number Header */}
@@ -17,26 +16,11 @@ export const HeroSection: React.FC = () => {
 
       {/* Hero Header: Avatar + Meta */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-6">
-        {/* Profile Avatar Frame */}
-        <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-1 shadow-sm">
-          {!imgError ? (
-            <img
-              src="/profile.png"
-              alt="Portrait of John Paulo Sanchez"
-              className="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-[var(--bg-tertiary)] text-[var(--accent-code)] font-bold text-lg">
-              JPS
-            </div>
-          )}
-          {/* Status pip indicator */}
-          <span
-            className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-[var(--accent-code)] border-2 border-[var(--bg-primary)] shadow-[0_0_6px_rgba(16,185,129,0.8)]"
-            title="Available for projects & roles"
-          />
-        </div>
+        {/* Interactive Sprite Dispersal Avatar */}
+        <SpriteAvatar
+          alt={`Portrait of ${PERSONAL_INFO.name}`}
+          className="flex-shrink-0"
+        />
 
         {/* Identity & Headline */}
         <div>
